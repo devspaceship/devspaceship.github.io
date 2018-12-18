@@ -1,2 +1,2 @@
 # Understanding AI
-Go to devspaceship.github.io
+Go to [my website](https://devspaceship.github.io)!
