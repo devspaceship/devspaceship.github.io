@@ -27,6 +27,10 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="/images/favicon.png">
 
+  <!-- Script & p5 -->
+  <script src="/p5/p5.min.js"></script>
+  <script src="/scripts/gridworld.js"></script>
+
 </head>
 <body>
 
@@ -48,11 +52,14 @@
     
     <!--Content here-->
     <h2>Interactive Gridworld</h2>
+
+    <!--p5 canvas holder-->
+    <div id="canvas-holder"></div>
+
     <h3>To Do :</h3>
     <ul>
-      <li>Create a canvas with p5 or with another canvas library that could interest me</li>
-      <li>Create a grid where you can define different types of blocks on the cells</li>
-      <li>Create DOM elements to tune the learning algorithm</li>
+      <li>Make it possible to define different types of blocks on the cells</li>
+      <li>Create DOM elements to tune the learning algorithms</li>
       <li>Implement Monte-Carlo, SARSA, Q-learning, etc.</li>
       <li>Explain everything</li>
     </ul>
