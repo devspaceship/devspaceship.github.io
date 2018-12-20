@@ -29,6 +29,8 @@
 
   <!-- Script & p5 -->
   <script src="/p5/p5.min.js"></script>
+  <script src="/p5/addons/p5.dom.min.js"></script>
+  <script src="/scripts/grid.js"></script>
   <script src="/scripts/gridworld.js"></script>
 
 </head>
@@ -58,16 +60,29 @@
 
     <label for="block-type">Block Type</label>
     <select id="block-type">
+      <option value="trap">Trap</option>
       <option value="start">Starting Point</option>
       <option value="end">End Point</option>
-      <option value="trap">Trap</option>
       <option value="air">Air</option>
     </select>
 
+    <h3>What is a gridworld ?</h3>
+    <p>Even though the name seems self-explanatory, I am still going to give some precisions.
+      This gridworld is 8 lines x 12 columns.
+      It represent an environment in which our agent is going to take actions.
+      The orange cell on the up left corner is the starting point of our agent.
+      The green one placed on the bottom right is the goal state, where we want to go.
+      You can drag your mouse on the grid to place traps which are going to be represented by red cells.
+      You can erase by placing air again and you can also change the position of the starting and the ending point.
+    </p>
+    <p>We start at the first time step on the starting point.
+      At each time step, we chose a possible action.
+      Here we can go down or right but not up or left because there is a wall.
+      Let's say that we chosed to go down, 
+    </p>
+
     <h3>To Do :</h3>
     <ul>
-      <li>Create cell classes with draw method and others</li>
-      <li>Make it possible to define different types of blocks on the cells</li>
       <li>Create DOM elements to tune the learning algorithms</li>
       <li>Implement Monte-Carlo, SARSA, Q-learning, etc.</li>
       <li>Explain everything</li>
