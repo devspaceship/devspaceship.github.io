@@ -40,8 +40,8 @@
     <!--Navbar-->
     <div style="margin-top: 5%">
       <a class="button button-primary" href="/">Home</a>
-      <a class="button button-primary" href="/happiness_map.html">My Projects</a>
-      <a class="button button-primary" href="">Who Am I</a>
+      <a class="button button-primary" href="/projects.html">My Projects</a>
+      <a class="button button-primary" href="/">Who Am I</a>
     </div>
 
     <!-- Content -->
@@ -56,8 +56,17 @@
     <!--p5 canvas holder-->
     <div id="canvas-holder"></div>
 
+    <label for="block-type">Block Type</label>
+    <select id="block-type">
+      <option value="start">Starting Point</option>
+      <option value="end">End Point</option>
+      <option value="trap">Trap</option>
+      <option value="air">Air</option>
+    </select>
+
     <h3>To Do :</h3>
     <ul>
+      <li>Create cell classes with draw method and others</li>
       <li>Make it possible to define different types of blocks on the cells</li>
       <li>Create DOM elements to tune the learning algorithms</li>
       <li>Implement Monte-Carlo, SARSA, Q-learning, etc.</li>
