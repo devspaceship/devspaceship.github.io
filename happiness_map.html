@@ -21,11 +21,16 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/custom.css">
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="images/favicon.png">
 
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin=""/>
 </head>
 <body>
 
@@ -37,31 +42,34 @@
       <img class="u-max-full-width" src="images/student-hat.png" alt="Student Hat" width="128" height="128">
     </div>
     <h1><strong>U</strong>nderstanding <strong>A</strong>rtificial <strong>I</strong>ntelligence</h1>
-    <p>This website is in <em>construction</em> and will feature my <strong>projects</strong>.</p>
-    <p>I would like to do the following when I will not be crawling under studies:</p>
+    <h2>Live Happiness Map</h2>
+    <div id="mapid"></div>
+    <h3 style="margin-top: 5%">To Do :</h3>
     <ul>
-      <li>Create a resume page where I present myself.</li>
-      <li>
-        Implement some interactives projects and write explanations about their inner workings.
-        <ul>
-          <li>Live Hapiness Map - Natural Language Processing</li>
-          <li>Adding LateX to the website</li>
-        </ul>
-      </li>
-      <li>Create blogposts about mathematical or physical concepts.</li>
+      <li>Connect to Twitter API</li>
+      <li>Retrieve geolocated tweets</li>
+      <li>Perform sentiment analysis</li>
+      <li>Use the data to choropleth the map</li>
     </ul>
-    <a class="button button-primary" href="https://github.com/devspaceship">Github</a>
-    <a class="button button-primary" href="https://www.linkedin.com/in/devspaceship/">Linked In</a>
-    <a class="button button-primary" href="https://www.instagram.com/devspaceship/">Instagram</a>
-    <a class="button button-primary" href="https://www.facebook.com/devspaceship">Facebook</a>
+    
 
     <!-- Licenses -->
     <div style="margin-top: 10%">
-      Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> 
-      from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> 
-      is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+      <a class="button button-primary" href="https://github.com/devspaceship">Github</a>
+      <a class="button button-primary" href="https://www.linkedin.com/in/devspaceship/">Linked In</a>
+      <a class="button button-primary" href="https://www.instagram.com/devspaceship/">Instagram</a>
+      <a class="button button-primary" href="https://www.facebook.com/devspaceship">Facebook</a>
     </div>
+    Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> 
+    from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> 
+    is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
   </div>
+
+  <!--Script-->
+  <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+  integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+  crossorigin=""></script>
+  <script src="scripts/happiness_map.js"></script>
 
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
