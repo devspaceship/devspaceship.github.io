@@ -32,6 +32,7 @@
   <script src="/p5/addons/p5.dom.min.js"></script>
   <script src="/scripts/grid.js"></script>
   <script src="/scripts/gridworld.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
 
 </head>
 <body>
@@ -66,19 +67,34 @@
       <option value="air">Air</option>
     </select>
 
-    <h3>What is a gridworld ?</h3>
+    <h2>What is a gridworld ?</h3>
     <p>Even though the name seems self-explanatory, I am still going to give some precisions.
       This gridworld is 8 lines x 12 columns.
-      It represent an environment in which our agent is going to take actions.
-      The orange cell on the up left corner is the starting point of our agent.
-      The green one placed on the bottom right is the goal state, where we want to go.
+      It represent an <em>environment</em> in which our <em>agent</em> is going to take <em>actions</em>.
+      The orange cell on the up left corner is the starting point of our <em>agent</em>.
+      The green one placed on the bottom right is the goal <em>state</em>, where we want to go.
       You can drag your mouse on the grid to place traps which are going to be represented by red cells.
       You can erase by placing air again and you can also change the position of the starting and the ending point.
     </p>
-    <p>We start at the first time step on the starting point.
-      At each time step, we chose a possible action.
+    <p>We start at the first time step on the starting point \(s_0\).
+      At each time step, we chose a possible action \(a_t\).
       Here we can go down or right but not up or left because there is a wall.
-      Let's say that we chosed to go down, 
+      Let's say that we chosed to go down \(a_0 = down\).
+      If there is a trap, we get a 'reward' of \(-100\) and the game ends \(r_0 = -100\).
+      If there is nothing, we get a reward of \(-1\), \(r_0 = -1\), and if we got to the end, we get a reward of \(+100\) and the game ends \(r_0 = 100\).
+      The goal is to finish the game with the maximum reward possible \(R = \sum_{t=0}^{+\infty} r_t\).
+      That is why we give a negative reward when transitionning to a cell where there is nothing.
+      This tells us that the shortest path to the end is going to be better than making 3 times the tour of the map before going to the end.
+    </p>
+    <p>The theory lying underground that will help us understand the way we design solving algorithms is the <strong>Reinforcement Learning</strong> theory.
+      It is based on a mathematical model that capture the essence of problem like this one called
+      <a href="https://en.wikipedia.org/wiki/Markov_decision_process"><strong>Markov Decision Process</strong></a><br>
+      In a deterministic <strong>MDP</strong>, you have:
+      <ul>
+        <li>a set of states \(S\), where \(S_t\) is the subset of states you can access at time step \(t\).</li>
+        <li>a set of actions \(A\), where \(A_t\) is the subset of arctions you can chose at time step \(t\).</li>
+        <li>a reward function \(R\), where \(R(s, s')\) is the reward you get when transitionning from state \(s\) to \(s'\).</li>
+      </ul>
     </p>
 
     <h3>To Do :</h3>
