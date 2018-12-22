@@ -82,7 +82,7 @@
       Let's say that we chosed to go down \(a_0 = down\).
       If there is a trap, we get a 'reward' of \(-100\) and the game ends \(r_0 = -100\).
       If there is nothing, we get a reward of \(-1\), \(r_0 = -1\), and if we got to the end, we get a reward of \(+100\) and the game ends \(r_0 = 100\).
-      The goal is to finish the game with the maximum reward possible \(R = \sum_{t=0}^{+\infty} r_t\).
+      The goal is to finish the game with the maximum (discounted) reward possible \(R = \sum_{t=0}^{+\infty} \gamma^t r_t\).
       That is why we give a negative reward when transitionning to a cell where there is nothing.
       This tells us that the shortest path to the end is going to be better than making 3 times the tour of the map before going to the end.
     </p>
@@ -97,10 +97,29 @@
       </ul>
     </p>
 
+    <h2>What is a policy, a state value and a Q-function ?</h2>
+    <p>We first define the concept of <em>policy</em>.
+      The policy is a function \(\pi : S \rightarrow A\). In other words,
+      it takes a state as an input and output an action to take.
+      An agent is said to follow a policy \(\pi\) if \( \forall t \in \mathbb{N}, a_t = \pi(s_t)\) i.e. if it takes the action the policy ask it to follow. <br>
+      We can now define what are a state value and a Q-function given a policy:
+      \begin{align}
+        V^{\pi}(s_t) &= \mathbb{E}_{\pi} \left[\sum_{i = t}^{+ \infty} \gamma^{i-t} r_i \mid s_t \right] \\
+        Q^{\pi}(s_t, a_t) &= \mathbb{E}_{\pi} \left[\sum_{i = t}^{+ \infty} \gamma^{i-t} r_i \mid s_t, a_t \right]
+      \end{align}
+      We already used \(0 < \gamma \leq 1\) three times without explaining what it was, it is called the <em>discount rate</em>.
+      It will set at what extent our agent is going to be concerned by long-time reward.
+      If \(\gamma\) is near \(0\), we are going to take into account only reward in the near future.
+      If, however, \(\gamma\) is near \(1\), we will considerate more long-lasting reward.
+
+
+      What are those.
+    </p>
+
     <h3>To Do :</h3>
     <ul>
       <li>Create DOM elements to tune the learning algorithms</li>
-      <li>Implement Monte-Carlo, SARSA, Q-learning, etc.</li>
+      <li>Implement Value Iteration, Monte-Carlo, SARSA, Q-learning, etc.</li>
       <li>Explain everything</li>
     </ul>
 
