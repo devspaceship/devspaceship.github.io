@@ -102,7 +102,7 @@
       The policy is a function \(\pi : S \rightarrow A\). In other words,
       it takes a state as an input and output an action to take.
       An agent is said to follow a policy \(\pi\) if \( \forall t \in \mathbb{N}, a_t = \pi(s_t)\) i.e. if it takes the action the policy ask it to follow. <br>
-      We can now define what are a state value and a Q-function given a policy:
+      We can now define what are a state value and a Q-value function given a policy:
       \begin{align}
         V^{\pi}(s_t) &= \mathbb{E}_{\pi} \left[\sum_{i = t}^{+ \infty} \gamma^{i-t} r_i \mid s_t \right] \\
         Q^{\pi}(s_t, a_t) &= \mathbb{E}_{\pi} \left[\sum_{i = t}^{+ \infty} \gamma^{i-t} r_i \mid s_t, a_t \right]
@@ -110,19 +110,28 @@
       We already used \(0 < \gamma \leq 1\) three times without explaining what it was, it is called the <em>discount rate</em>.
       It will set at what extent our agent is going to be concerned by long-time reward.
       If \(\gamma\) is near \(0\), we are going to take into account only reward in the near future.
-      If, however, \(\gamma\) is near \(1\), we will considerate more long-lasting reward.
-
-
-      What are those.
+      If, however, \(\gamma\) is near \(1\), we will considerate more long-lasting reward. <br>
+      Ok now, what about \(V^{\pi}\) and \(Q^{\pi}\) ? <br>
+      \(V^{\pi}(s_t)\) represents the future discounted reward, starting at \(s_t\) and following the policy \(\pi\). <br>
+      \(Q^{\pi}(s_t, a_t)\) is very similar, it is the future discounted reward, still starting at \(s_t\)
+      but this time taking action \(a_t\) (possilbly different from \(\pi(s_t)\)) before following the policy.
+    </p>
+    <p>A policy which is going to maximize the future dicounted reward is called an optimal policy.
+      There can be several ones sometimes (for instance if transitioning to nothing would yield a reward of 0 and if the discounting factor was 1). <br>
+      Let's take one, we are going to call it \(\pi^*\), we also define the optimal state value function \(V^* = V^{\pi^*}\)
+      as well as the optimal Q-value function \(Q^* = Q^{\pi^*}\).
     </p>
 
-    <h3>To Do :</h3>
-    <ul>
-      <li>Create DOM elements to tune the learning algorithms</li>
-      <li>Implement Value Iteration, Monte-Carlo, SARSA, Q-learning, etc.</li>
-      <li>Explain everything</li>
-    </ul>
+    <h2>Let's solve it !</h2>
+    <h3>Policy Iteration</h3>
+    <h3>Value Iteration</h3>
+    <h3>Monte Carlo Control</h3>
+    <h3>SARSA</h3>
+    <h3>Q-learning</h3>
 
+
+
+    
     <!-- Licenses -->
     <div style="margin-top: 10%">
       <a class="button button-primary" href="https://github.com/devspaceship">Github</a>
