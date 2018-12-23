@@ -102,7 +102,7 @@
       The policy is a function \(\pi : S \rightarrow A\). In other words,
       it takes a state as an input and output an action to take.
       An agent is said to follow a policy \(\pi\) if \( \forall t \in \mathbb{N}, a_t = \pi(s_t)\) i.e. if it takes the action the policy ask it to follow. <br>
-      We can now define what are a state value and a Q-value function given a policy:
+      We can now define what are a state value and a Q-value (also called action-value) function given a policy:
       \begin{align}
         V^{\pi}(s_t) &= \mathbb{E}_{\pi} \left[\sum_{i = t}^{+ \infty} \gamma^{i-t} r_i \mid s_t \right] \\
         Q^{\pi}(s_t, a_t) &= \mathbb{E}_{\pi} \left[\sum_{i = t}^{+ \infty} \gamma^{i-t} r_i \mid s_t, a_t \right]
@@ -118,12 +118,42 @@
     </p>
     <p>A policy which is going to maximize the future dicounted reward is called an optimal policy.
       There can be several ones sometimes (for instance if transitioning to nothing would yield a reward of 0 and if the discounting factor was 1). <br>
-      Let's take one, we are going to call it \(\pi^*\), we also define the optimal state value function \(V^* = V^{\pi^*}\)
-      as well as the optimal Q-value function \(Q^* = Q^{\pi^*}\).
+      Let's take one, we are going to call it \(\pi^*\), we also define the optimal
+      state value function \(V^* = V^{\pi^*} = \max_{\pi} V^{\pi}\)
+      as well as the optimal Q-value function \(Q^* = Q^{\pi^*} = \max_{\pi} Q^{\pi}\). All optimal policies share the same state-value and action-value (Q-value) function.
     </p>
 
     <h2>Let's solve it !</h2>
+    <p>The next remarks are going to be central for solving the problem,
+      they are the <a href="https://en.wikipedia.org/wiki/Bellman_equation">Bellman Equations</a> of a deterministic <em>MDP</em> (with deterministic policy).
+      \begin{align}
+        V^{\pi}(s_t) &= \sum_{i = t}^{+ \infty} \gamma^{i-t} r_i\\
+        &= r_t + \sum_{i = t+1}^{+ \infty} \gamma^{i-t} r_i\\
+        &= r_t + \gamma \sum_{i = t+1}^{+ \infty} \gamma^{i-(t+1)} r_i\\
+        &= R(s_t, \pi(s_t)) + \gamma V^{\pi}(s_{t+1})
+      \end{align}
+      By the same reasoning we obtain the equation for the action-value function:
+      \begin{align}
+        Q^{\pi}(s_t, a_t) &= \sum_{i = t}^{+ \infty} \gamma^{i-t} r_i \mid a_t\\
+        &= r_t + \gamma \sum_{i = t+1}^{+ \infty} \gamma^{i-(t+1)} r_i\\
+        &= R(s_t, s(s_t, a_t)) + \gamma V^{\pi}(s(s_t, a_t))
+      \end{align}
+      For the optimal state-value and action-value functions, we have:
+      \begin{align}
+        V^*(s_t) &= R(s_t, \pi^*(s_t)) + \gamma V^*(s_{t+1})\\
+        Q^*(s_t, a_t) &= R(s_t, s(s_t, a_t)) + \gamma V^*(s(s_t, a_t))
+      \end{align}
+      We can also remark that \(V^*(s) = \max_a Q^*(s, a)\) and inject it in the last equation:
+      \[
+        Q^*(s_t, a_t) = R(s_t, s(s_t, a_t)) + \gamma \max_{a_{t+1}} Q^*(s(s_t, a_t), a_{t+1})
+      \]
+    </p>
+
     <h3>Policy Iteration</h3>
+    <p>The first method we are going to use is called Policy Iteration.
+        It is a bootstrap method, meaning that it uses estimates to do other estimates.
+        The first thing we're going to want to estimate is the state-value function.
+    </p>
     <h3>Value Iteration</h3>
     <h3>Monte Carlo Control</h3>
     <h3>SARSA</h3>
@@ -131,7 +161,7 @@
 
 
 
-    
+
     <!-- Licenses -->
     <div style="margin-top: 10%">
       <a class="button button-primary" href="https://github.com/devspaceship">Github</a>
