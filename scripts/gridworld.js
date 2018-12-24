@@ -11,7 +11,7 @@ function setup()
   
 function draw() 
 {
-    background(30);
+    background(0,0,0,0);
     GRID.draw();
     drawGrid();
 

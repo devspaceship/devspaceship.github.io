@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="/css/normalize.css">
   <link rel="stylesheet" href="/css/skeleton.css">
   <link rel="stylesheet" href="/css/custom.css">
+  <link rel="stylesheet" href="/prism/prism.css">
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -33,6 +34,7 @@
   <script src="/scripts/grid.js"></script>
   <script src="/scripts/gridworld.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+  <script src="/prism/prism.js"></script>
 
 </head>
 <body>
@@ -149,15 +151,58 @@
       \]
     </p>
 
-    <h3>Policy Iteration</h3>
+    <h2>Policy Iteration</h2>
     <p>The first method we are going to use is called Policy Iteration.
-        It is a bootstrap method, meaning that it uses estimates to do other estimates.
-        The first thing we're going to want to estimate is the state-value function.
+        We initialize the state-value function with a random one or
+        we can also initialize it at 0 for every state.
+        We, then, derive a better policy from this state-value.
+        We calculate the new state-value and again a new better policy,
+        and so on until the policy is stable.
     </p>
-    <h3>Value Iteration</h3>
-    <h3>Monte Carlo Control</h3>
-    <h3>SARSA</h3>
-    <h3>Q-learning</h3>
+    <h3>Policy Evaluation</h3>
+    <p>We first need a method in order to estimate the state-value function of a policy.
+        We could solve the \(\mid S \mid\) equations at \(\mid S \mid\) unknowns,
+        but we are instead going to use a simpler and less computationally expensive way.
+        This technique is called <em>Policy Evaluation</em>.
+        For this, we want to use the Bellman equation as an update rule for our state-value estimation:
+        \[
+          V_{k+1}(s) = R(s, \pi(s)) + \gamma V_k(\pi(s))
+        \]
+        We can then have two arrays, one for the old values and one for the new values calculated from the old ones.
+        We can also do it in-place with one array, replacing values as we go through \(S\).
+        Although the latter is usually faster to converge it is anisotropic in the sense that
+        the order we are going to do the updates is going to matter.
+        In this example, we are going to use the two array version.
+        Here, 'N' is the number of rows, 'M' the number of columns and
+        'transition' is a function that gives the next state and the reward given the current state and action.
+        Finally, treshold is a small value that will determine when we stop the iteration.
+    </p>
+<pre><code class="language-python">
+def policy_evaluation(policy, treshold):
+  V_old = [[0]*M for _ in range(N)]
+  V_new = [[]*M for _ in range(N)]
+
+  while True:
+    delta = 0
+
+    for i in range(N):
+      for j in range(M):
+        i_, j_, r = transition(i, j, policy(i, j))
+        V_new[i][j] = r + gamma*V_old[i_][j_]
+
+        delta = max(delta, abs(V_new[i][j] - V_old[i][j]))
+
+    if delta < treshold:
+      break
+
+  return V_new
+</code></pre>
+    
+
+    <h2>Value Iteration</h2>
+    <h2>Monte Carlo Control</h2>
+    <h2>SARSA</h2>
+    <h2>Q-learning</h2>
 
 
 
