@@ -159,6 +159,7 @@
         We calculate the new state-value and again a new better policy,
         and so on until the policy is stable.
     </p>
+
     <h3>Policy Evaluation</h3>
     <p>We first need a method in order to estimate the state-value function of a policy.
         We could solve the \(\mid S \mid\) equations at \(\mid S \mid\) unknowns,
@@ -178,16 +179,13 @@
         Finally, treshold is a small value that will determine when we stop the iteration.
     </p>
 <pre><code class="language-python">
-def policy_evaluation(policy, treshold):
-  V_old = [[0]*M for _ in range(N)]
-  V_new = [[]*M for _ in range(N)]
-
+def policy_evaluation(policy, treshold, V_old, V_new):
   while True:
     delta = 0
 
     for i in range(N):
       for j in range(M):
-        i_, j_, r = transition(i, j, policy(i, j))
+        i_, j_, r = transition(i, j, policy[i][j])
         V_new[i][j] = r + gamma*V_old[i_][j_]
 
         delta = max(delta, abs(V_new[i][j] - V_old[i][j]))
@@ -195,9 +193,76 @@ def policy_evaluation(policy, treshold):
     if delta < treshold:
       break
 
-  return V_new
+    V_old = copy.deepcopy(V_new)
 </code></pre>
-    
+
+    <h3>Policy Improvement</h3>
+    Once we have evaluated the state-value function,
+    we change our policy for a possibly better one:
+    \[
+      \pi'(s) = \text{argmax}_a r(s, s(s, a)) + \gamma V(s(s, a))
+    \]
+<pre><code class="language-python">
+def policy_improvement(V):
+  policy = [[]*M for _ in range(N)]
+
+  for i in range(N):
+    for j in range(M):
+      best = float("-inf")
+      best_action = 0
+
+      for action in range(4):
+        i_, j_, r = transition(i, j, a)
+        if r + gamma*V[i_][j_] > best:
+          best = r + gamma*V[i_][j_]
+          best_action = action
+
+      policy[i][j] = best_action
+
+  return policy
+
+</code></pre>
+
+    <h3>Final Algorithm</h3>
+    We write an helper function to determine if the policy is stable:
+<pre><code class="language-python">
+def is_stable(p1, p2):
+  stable = True
+
+  for i in range(N):
+    for j in range(M):
+      if p1[i][j] != p2[i][j]:
+        stable = False
+
+  return stable
+</code></pre>
+    <p>
+      We can now write the full algorithm
+    </p>
+<pre><code class="language-python">
+from random import randint
+
+treshold = 1e-5
+# i2a = ['UP', 'RIGHT', 'DOWN', 'LEFT']
+# a2i = {'UP': 0, 'RIGHT': 1, 'DOWN': 2, 'LEFT': 3}
+V_old = [[0]*M for _ in range(N)]
+V_new = [[0]*M for _ in range(N)]
+
+pi = [[randint(0, 3) for _ in range(M)] for _ in range(N)]
+
+while True:
+  policy_evaluation(pi, treshold, V_old, V_new)
+  new_pi = policy_improvement(V_new)
+
+  if is_stable(pi, new_pi):
+    break
+
+  pi = new_pi
+</code></pre>
+    <p>
+      We can remark that we use the previous state-value function for evaluating the newt one,
+      this have the effect of greatly speeding up the evaluation step.
+    </p>
 
     <h2>Value Iteration</h2>
     <h2>Monte Carlo Control</h2>
