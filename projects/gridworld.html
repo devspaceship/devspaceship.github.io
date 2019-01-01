@@ -178,8 +178,7 @@
         'transition' is a function that gives the next state and the reward given the current state and action.
         Finally, treshold is a small value that will determine when we stop the iteration.
     </p>
-<pre><code class="language-python">
-def policy_evaluation(policy, treshold, V_old, V_new):
+<pre><code class="language-python">def policy_evaluation(policy, treshold, V_old, V_new):
   while True:
     delta = 0
 
@@ -202,8 +201,7 @@ def policy_evaluation(policy, treshold, V_old, V_new):
     \[
       \pi'(s) = \text{argmax}_a r(s, s(s, a)) + \gamma V(s(s, a))
     \]
-<pre><code class="language-python">
-def policy_improvement(V):
+<pre><code class="language-python">def policy_improvement(V):
   policy = [[]*M for _ in range(N)]
 
   for i in range(N):
@@ -225,8 +223,7 @@ def policy_improvement(V):
 
     <h3>Final Algorithm</h3>
     We write an helper function to determine if the policy is stable:
-<pre><code class="language-python">
-def is_stable(p1, p2):
+<pre><code class="language-python">def is_stable(p1, p2):
   stable = True
 
   for i in range(N):
@@ -239,8 +236,7 @@ def is_stable(p1, p2):
     <p>
       We can now write the full algorithm
     </p>
-<pre><code class="language-python">
-from random import randint
+<pre><code class="language-python">from random import randint
 
 treshold = 1e-5
 # i2a = ['UP', 'RIGHT', 'DOWN', 'LEFT']
@@ -265,10 +261,65 @@ while True:
     </p>
 
     <h2>Value Iteration</h2>
+    <p>
+      In Policy Iteration, we were estimating the state-value function of the policies until reasonable convergence.
+      In Value Iteration, we instantly greedify the policy between the sweeps for state-value evaluation.
+      It discards the need for actually computing the policy between each evaluation.
+    </p>
+<pre><code class="language-python">def value_iteration(treshold, V_old, V_new):
+  while True:
+    delta = 0
+
+    for i in range(N):
+      for j in range(M):
+        best = float("-inf")
+
+        for a in range(4):
+          i_, j_, r = transition(i, j, a)
+
+          v = r + gamma*V_old[i_][j_]
+          if v > best:
+            best = v
+
+        V_new[i][j] = best
+
+        delta = max(delta, abs(V_new[i][j] - V_old[i][j]))
+
+    if delta < treshold:
+      break
+
+    V_old = copy.deepcopy(V_new)
+</code></pre>
+    <p>
+      In practice, we usually don't use this algorithm in this form:
+      a few steps of classical evaluation are put in between two Value Iteration steps.
+      If Value Iteration can be seen as one step of evaluation followed by one policy improvement,
+      this version of the algorithm can be seen as \(k\) steps of evaluation followed by an improvement one.
+    </p>
+
+
+
+
     <h2>Monte Carlo Control</h2>
     <h2>SARSA</h2>
-    <h2>Q-learning</h2>
+    <h2>Q-Learning</h2>
 
+    <h2>Final Note</h2>
+    <p>
+      The code presented here is halfway between Python and pseudo-code.
+      If you want to see the actual code used here (JavaScript - p5),
+      see at <a href="">insert link to code</a>.
+      Finally, a lot of simplification have been done in order to explain more directly
+      the different concepts.
+      To have a better view of those, see <a href="">insert link to Sutton & Barto</a>
+    </p>
+
+    <h2>Still To Do</h2>
+    <ul>
+      <li>Finsih algorithm explainations</li>
+      <li>Implement them</li>
+      <li>Add explaining images</li>
+    </ul>
 
 
 
