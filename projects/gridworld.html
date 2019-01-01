@@ -307,6 +307,20 @@ pi = policy_improvement(V_new)
     </p>
 
     <h2>Monte Carlo Control</h2>
+    <p>
+      Monte Carlo Control works in a different way. Instead of evaluating the state-value function from transitions
+      from the state space, we evaluate the action-value function and from simulations inside the environment.
+      This can be useful when we don't have a model available and we can only sample transitions.
+      In order to keep track of our estimates of action-value following a policy,
+      we will need to store the episodes transitions to see what was the final return
+      of following a policy given an initial state and action.
+    </p>
+<pre><code class="language-python">
+  
+</code></pre>
+
+
+
     <h2>SARSA</h2>
     <h2>Q-Learning</h2>
 
