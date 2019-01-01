@@ -290,15 +290,21 @@ while True:
 
     V_old = copy.deepcopy(V_new)
 </code></pre>
+<pre><code class="language-python">from random import randint
+
+treshold = 1e-5
+V_old = [[0]*M for _ in range(N)]
+V_new = [[0]*M for _ in range(N)]
+
+value_iteration(treshold, V_old, V_new)
+pi = policy_improvement(V_new)
+</code></pre>
     <p>
       In practice, we usually don't use this algorithm in this form:
       a few steps of classical evaluation are put in between two Value Iteration steps.
       If Value Iteration can be seen as one step of evaluation followed by one policy improvement,
       this version of the algorithm can be seen as \(k\) steps of evaluation followed by an improvement one.
     </p>
-
-
-
 
     <h2>Monte Carlo Control</h2>
     <h2>SARSA</h2>
