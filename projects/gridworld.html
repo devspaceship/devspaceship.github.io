@@ -84,6 +84,7 @@
       Let's say that we chosed to go down \(a_0 = down\).
       If there is a trap, we get a 'reward' of \(-100\) and the game ends \(r_0 = -100\).
       If there is nothing, we get a reward of \(-1\), \(r_0 = -1\), and if we got to the end, we get a reward of \(+100\) and the game ends \(r_0 = 100\).
+      Note that we can define a terminal state as a state where every action takes you to the same state with a reward of \(0\).
       The goal is to finish the game with the maximum (discounted) reward possible \(R = \sum_{t=0}^{+\infty} \gamma^t r_t\).
       That is why we give a negative reward when transitionning to a cell where there is nothing.
       This tells us that the shortest path to the end is going to be better than making 3 times the tour of the map before going to the end.
@@ -306,7 +307,7 @@ pi = policy_improvement(V_new)
       this version of the algorithm can be seen as \(k\) steps of evaluation followed by an improvement one.
     </p>
 
-    <h2>Monte Carlo Control</h2>
+    <!--<h2>Monte Carlo Control</h2>
     <p>
       Monte Carlo Control works in a different way. Instead of evaluating the state-value function from transitions
       from the state space, we evaluate the action-value function and from simulations inside the environment.
@@ -315,11 +316,23 @@ pi = policy_improvement(V_new)
       we will need to store the episodes transitions to see what was the final return
       of following a policy given an initial state and action.
     </p>
-<pre><code class="language-python">
-  
-</code></pre>
+<pre><code class="language-python">from random import randint
+# i2a = ['UP', 'RIGHT', 'DOWN', 'LEFT']
+# a2i = {'UP': 0, 'RIGHT': 1, 'DOWN': 2, 'LEFT': 3}
 
+Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
+pi = [[randint(0, 3) for _ in range(M)] for _ in range(N)]
+returns = [[[[]]*4 for _ in range(M)] for _ in range(N)]
 
+while True:
+  policy_evaluation(pi, treshold, V_old, V_new)
+  new_pi = policy_improvement(V_new)
+
+  if is_stable(pi, new_pi):
+    break
+
+  pi = new_pi
+</code></pre>-->
 
     <h2>SARSA</h2>
     <h2>Q-Learning</h2>
