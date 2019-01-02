@@ -49,7 +49,7 @@ class Grid
         {
             for (let j = 0; j < this.m; j++) 
             {
-                if (this.map[i][j] == AIR) { fill(0, 0, 0, 0); }
+                if (this.map[i][j] == AIR) { fill('#303030'); }
                 else if (this.map[i][j] == START) { fill('#f49d41'); }
                 else if (this.map[i][j] == END) { fill('#42f465'); }
                 else { fill('#f44141'); }

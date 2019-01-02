@@ -11,7 +11,7 @@ function setup()
   
 function draw() 
 {
-    background(0,0,0,0);
+    background('#303030');
     GRID.draw();
     drawGrid();
 
@@ -19,11 +19,6 @@ function draw()
 }
 
 function mousePressed()
-{
-    mouseDragged();
-}
-
-function mouseDragged()
 {
     let i = Math.floor(mouseY/(CELL_SIZE+3));
     let j = Math.floor(mouseX/(CELL_SIZE+3));
@@ -48,6 +43,11 @@ function mouseDragged()
     }
 
     loop();
+}
+
+function mouseDragged()
+{
+    mousePressed();
 }
 
 function drawGrid()
