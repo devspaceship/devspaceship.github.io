@@ -326,14 +326,64 @@ returns = [[[[]]*4 for _ in range(M)] for _ in range(N)]
 </code></pre> -->
 
     <h2>SARSA</h2>
-    With SARSA and Q-Learning we are going to be estimating Q instead of V and derive the optimal policy from it.
-    Another difference with these methods is that we are going to be simulating episodes
-    through the gridworld in order to estimate the Q-function instead of sweeping through the state space.<br>
-    SARSA stands for State-Action-Reward-State-Action because we are going to look one action forward following the policy to estimate \(Q(s,a)\).
-    In fact we are not always going to follow the policy because it can be biased if it had not tried certain actions.
-    To ensure that we explore the state-action space we need to take a random action once in a while.
-    Since we don't need to explore as much as in the beginning episodes after episodes we can decrease the probability over time.
-    This probability of chosing a random action in a given state is reprisented by \(\epsilon \propto \frac{1}{t}\) where t represent the epsiode.
+    <p>
+      With SARSA and Q-Learning we are going to be estimating Q instead of V and derive the optimal policy from it.
+      Another difference with these methods is that we are going to be simulating episodes
+      through the gridworld in order to estimate the Q-function instead of sweeping through the state space.<br>
+      SARSA stands for State-Action-Reward-State-Action because we are going to look one action forward following the policy to estimate \(Q(s,a)\).
+      In fact we are not always going to follow the policy because it can be biased if it had not tried certain actions.
+      To ensure that we explore the state-action space we need to take a random action once in a while.
+      Since we don't need to explore as much as in the beginning episodes after episodes we can decrease the probability over time.
+      This probability of chosing a random action in a given state is represented by \(\epsilon\)
+      which decreases in \(\frac{1}{t}\) where \(t\) represent the epsiode.
+    </p>
+<pre><code class='language-python'>def choose_action(pi, i, j, eps_0, T, t):
+  eps = eps_0/(1+(t/T))
+
+  if random() < eps:
+    a = randint(0, 3)
+  else:
+    a = pi[i][j]
+
+  return a
+</code></pre>
+    <p>
+      Here we use \(\epsilon = \frac{\epsilon_0}{1+t/T}\). \(\epsilon_0\) is \(\epsilon\) at time-step \(t=0\) and \(T\)
+      represents the decreasing period.
+    </p>
+<pre><code class='language-python'>old_Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
+new_Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
+pi = [[randint(0, 3) for _ in range(M)] for _ in range(N)]
+t = 0
+
+while True:
+  i = randint(0, N - 1)
+  j = randint(0, M - 1)
+  a = choose_action(pi, i, j, eps_0, T, t)
+
+  while True:
+    i_, j_, r = transition(i, j, a)
+    a_ = choose_action(pi, i_, j_, eps_0, T, t)
+
+    new_Q[i][j][a] = (1 - alpha)*old_Q[i][j][a] + alpha*(r + gamma*old_Q[i_][j_][a_])
+    
+    i, j, a = i_, j_, a_
+    if is_terminal(i, j):
+      break
+
+  pi = Q_to_policy(new_Q)
+
+  if delta(old_Q, new_Q) < threshold:
+    break
+
+  old_Q = copy.deepcopy(new_Q)
+  t = t+1
+</code></pre>
+    <p>
+      Remark that we do not completely update \(Q(s,a)\) to \(r + \gamma*Q(s', a')\),
+      we make a step in that direction of proportion \(\alpha\), this parameter is the 
+      learning rate of our algorithm.
+    </p>
 
     <h2>Q-Learning</h2>
 
