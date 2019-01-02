@@ -307,7 +307,7 @@ pi = policy_improvement(V_new)
       this version of the algorithm can be seen as \(k\) steps of evaluation followed by an improvement one.
     </p>
 
-    <!--<h2>Monte Carlo Control</h2>
+    <!-- <h2>Monte Carlo Control</h2>
     <p>
       Monte Carlo Control works in a different way. Instead of evaluating the state-value function from transitions
       from the state space, we evaluate the action-value function and from simulations inside the environment.
@@ -323,9 +323,18 @@ pi = policy_improvement(V_new)
 Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
 pi = [[randint(0, 3) for _ in range(M)] for _ in range(N)]
 returns = [[[[]]*4 for _ in range(M)] for _ in range(N)]
-</code></pre>-->
+</code></pre> -->
 
     <h2>SARSA</h2>
+    With SARSA and Q-Learning we are going to be estimating Q instead of V and derive the optimal policy from it.
+    Another difference with these methods is that we are going to be simulating episodes
+    through the gridworld in order to estimate the Q-function instead of sweeping through the state space.<br>
+    SARSA stands for State-Action-Reward-State-Action because we are going to look one action forward following the policy to estimate \(Q(s,a)\).
+    In fact we are not always going to follow the policy because it can be biased if it had not tried certain actions.
+    To ensure that we explore the state-action space we need to take a random action once in a while.
+    Since we don't need to explore as much as in the beginning episodes after episodes we can decrease the probability over time.
+    This probability of chosing a random action in a given state is reprisented by \(\epsilon \propto \frac{1}{t}\) where t represent the epsiode.
+
     <h2>Q-Learning</h2>
 
     <h2>Final Note</h2>
