@@ -349,7 +349,8 @@ returns = [[[[]]*4 for _ in range(M)] for _ in range(N)]
 </code></pre>
     <p>
       Here we use \(\epsilon = \frac{\epsilon_0}{1+t/T}\). \(\epsilon_0\) is \(\epsilon\) at time-step \(t=0\) and \(T\)
-      represents the decreasing period.
+      represents the decreasing period. Choosing a random action with probability \(\epsilon\) and the greedy action otherwise
+      is called an \(\epsilon\)-greedy policy.
     </p>
 <pre><code class='language-python'>old_Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
 new_Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
@@ -386,6 +387,38 @@ while True:
     </p>
 
     <h2>Q-Learning</h2>
+    Q-Learning is basically the same as SARSA, it only differs in its update rule:
+    instead of choosing a second action following the \(\epsilon\)-greedy policy,
+    we choose the best action available in state \(s'\):
+    \(\max_{a'} Q(s', a')\) which is, in fact, the state-value of \(s'\): \(V(s')\) for the greedy policy.
+<pre><code class='language-python'>old_Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
+new_Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
+pi = [[randint(0, 3) for _ in range(M)] for _ in range(N)]
+t = 0
+
+while True:
+  i = randint(0, N - 1)
+  j = randint(0, M - 1)
+  a = choose_action(pi, i, j, eps_0, T, t)
+
+  while True:
+    i_, j_, r = transition(i, j, a)
+    a_ = choose_action(pi, i_, j_, eps_0, T, t)
+
+    new_Q[i][j][a] = (1 - alpha)*old_Q[i][j][a] + alpha*(r + gamma*max(old_Q[i_][j_]))
+    
+    i, j, a = i_, j_, a_
+    if is_terminal(i, j):
+      break
+
+  pi = Q_to_policy(new_Q)
+
+  if delta(old_Q, new_Q) < threshold:
+    break
+
+  old_Q = copy.deepcopy(new_Q)
+  t = t+1
+</code></pre>
 
     <h2>Final Note</h2>
     <p>
