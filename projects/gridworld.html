@@ -323,15 +323,6 @@ pi = policy_improvement(V_new)
 Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
 pi = [[randint(0, 3) for _ in range(M)] for _ in range(N)]
 returns = [[[[]]*4 for _ in range(M)] for _ in range(N)]
-
-while True:
-  policy_evaluation(pi, treshold, V_old, V_new)
-  new_pi = policy_improvement(V_new)
-
-  if is_stable(pi, new_pi):
-    break
-
-  pi = new_pi
 </code></pre>-->
 
     <h2>SARSA</h2>
