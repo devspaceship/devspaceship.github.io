@@ -7,7 +7,11 @@ function setup()
 {
     let cnv = createCanvas(M*CELL_SIZE + (M+1)*3, N*CELL_SIZE + (N+1)*3);
     cnv.parent('canvas-holder');
+    cnv.mousePressed(canvasClicked);
     cnv.mouseMoved(canvasClicked);
+
+    let solver = select('#solver-type');
+    solver.changed(updateDom);
 }
   
 function draw() 
@@ -15,8 +19,6 @@ function draw()
     background('#303030');
     GRID.draw();
     drawGrid();
-
-    updateDom();
 
     noLoop();
 }
@@ -72,7 +74,11 @@ function updateDom()
     let solver = select('#solver-type').value();
     if (solver == "policy_iter")
     {
-
+        select('#policy_iter_options').show();
+    }
+    else if (solver == "value_iter")
+    {
+        select('#policy_iter_options').hide();
     }
 }
 
