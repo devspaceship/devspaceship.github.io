@@ -69,6 +69,27 @@
       <option value="air">Air</option>
     </select>
 
+    <label for="solver-type">Solver</label>
+    <select id="solver-type">
+      <option value="policy_iter">Policy Iteration</option>
+      <option value="value_iter">Value Iteration</option>
+      <option value="sarsa">SARSA</option>
+      <option value="q_learning">Q-Learning</option>
+    </select>
+
+    <button class='button-primary'>Solve</button>
+
+    <div id="policy_iter_options" class="row">
+      <div class="four columns">
+          <label for="policy_iter_treshold">Treshold</label>
+          <input type="range" min="-8" max="-2" value="-5" id="policy_iter_treshold">
+      </div>
+      <div class="four columns">
+          <label for="policy_iter_gamma">Gamma</label>
+          <input type="range" min="0" max="100" value="95" id="policy_iter_gamma">
+      </div>
+    </div>
+
     <h2>What is a gridworld ?</h3>
     <p>Even though the name seems self-explanatory, I am still going to give some precisions.
       This gridworld is 8 lines x 12 columns.
