@@ -77,11 +77,19 @@ function updateDom()
     {
         select('#policy_iter_options').show();
         select('#value_iter_options').hide();
+        select('#SARSA_Q_options').hide();
     }
     else if (solver == "value_iter")
     {
         select('#policy_iter_options').hide();
         select('#value_iter_options').show();
+        select('#SARSA_Q_options').hide();
+    }
+    else if (solver == "sarsa" || solver == "q_learning")
+    {
+        select('#policy_iter_options').hide();
+        select('#value_iter_options').hide();
+        select('#SARSA_Q_options').show();
     }
 }
 
