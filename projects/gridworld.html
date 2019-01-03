@@ -90,6 +90,21 @@
       </div>
     </div>
 
+    <div id="value_iter_options" class="row">
+      <div class="four columns">
+          <label for="value_iter_treshold">Treshold</label>
+          <input type="range" min="-8" max="-2" value="-5" id="value_iter_treshold">
+      </div>
+      <div class="four columns">
+          <label for="value_iter_gamma">Gamma</label>
+          <input type="range" min="0" max="100" value="95" id="value_iter_gamma">
+      </div>
+      <div class="four columns">
+        <label for="value_iter_k">Evaluations between improvements</label>
+        <input type="range" min="1" max="20" value="4" id="value_iter_k">
+      </div>
+    </div>
+
     <h2>What is a gridworld ?</h3>
     <p>Even though the name seems self-explanatory, I am still going to give some precisions.
       This gridworld is 8 lines x 12 columns.

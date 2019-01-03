@@ -12,6 +12,7 @@ function setup()
 
     let solver = select('#solver-type');
     solver.changed(updateDom);
+    updateDom();
 }
   
 function draw() 
@@ -75,10 +76,12 @@ function updateDom()
     if (solver == "policy_iter")
     {
         select('#policy_iter_options').show();
+        select('#value_iter_options').hide();
     }
     else if (solver == "value_iter")
     {
         select('#policy_iter_options').hide();
+        select('#value_iter_options').show();
     }
 }
 
