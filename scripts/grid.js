@@ -58,4 +58,22 @@ class Grid
             }
         }
     }
+
+    policyIteration()
+    {
+    }
+
+    valueIteration()
+    {
+    }
+
+    SARSA()
+    {
+
+    }
+
+    QLearning()
+    {
+
+    }
 }

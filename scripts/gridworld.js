@@ -10,9 +10,10 @@ function setup()
     cnv.mousePressed(canvasClicked);
     cnv.mouseMoved(canvasClicked);
 
-    let solver = select('#solver-type');
-    solver.changed(updateDom);
+    select('#solver-type').changed(updateDom);
     updateDom();
+
+    select('#solve_button').mouseClicked(solve);
 }
   
 function draw() 
@@ -22,6 +23,15 @@ function draw()
     drawGrid();
 
     noLoop();
+}
+
+function solve()
+{
+    let solver = select('#solver-type').value();
+    if (solver == "policy_iter") {GRID.policyIteration();}
+    else if (solver == "value_iter") {GRID.valueIteration();}
+    else if (solver == "sarsa") {GRID.SARSA();}
+    else {GRID.QLearning();}
 }
 
 function canvasClicked()
@@ -92,4 +102,3 @@ function updateDom()
         select('#SARSA_Q_options').show();
     }
 }
-
