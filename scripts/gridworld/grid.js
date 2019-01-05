@@ -71,7 +71,7 @@ class Grid
         let i_ = i + a2di[a];
         let j_ = j + a2dj[a];
 
-        if (i_ < 0 || i_ >= N || j_ < 0 || j_ >= M) { return [i, j, -1]; }
+        if (i_ < 0 || i_ >= this.n || j_ < 0 || j_ >= this.m) { return [i, j, -1]; }
         else
         {
             let next = this.map[i_][j_]
@@ -82,8 +82,52 @@ class Grid
         }
     }
 
+    zeros2D(n, m)
+    {
+        let zeros = new Array(n);
+        for (let i = 0; i < n; i++)
+        {
+            zeros[i] = new Array(m);
+            zeros[i].fill(0);
+        }
+
+        return zeros;
+    }
+
+    randint2D(n, m, k)
+    {
+        let rand = new Array(n);
+        for (let i = 0; i < n; i++)
+        {
+            rand[i] = new Array(m);
+            for (let j = 0; j < m; j++)
+            {
+                rand[i][j] = Math.floor(k*Math.random());
+            }
+        }
+
+        return rand;
+    }
+
+    zeros3D(n, m, k)
+    {
+        let zeros = new Array(n);
+        for (let i = 0; i < n; i++)
+        {
+            zeros[i] = new Array(m);
+            for (let j = 0; j < m; j++)
+            {
+                zeros[i][j] = new Array(k);
+                zeros[i][j].fill(0);
+            }
+        }
+
+        return zeros;
+    }
+
     policyIteration()
     {
+        
     }
 
     valueIteration()
