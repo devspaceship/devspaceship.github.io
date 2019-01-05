@@ -2,6 +2,7 @@ const N = 8;
 const M = 12;
 const CELL_SIZE = 50;
 const GRID = new Grid(N, M);
+
 let block_type_select, solver_type_select;
 let policy_iter_options, value_iter_options, SARSA_Q_options;
 
