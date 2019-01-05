@@ -125,9 +125,39 @@ class Grid
         return zeros;
     }
 
+    policyEvaluation(policy, treshold, gamma)
+    {
+        let V = zeros2D(this.n, this.m);
+        let V_ = zeros2D(this.n, this.m);
+        
+        let d;
+        do
+        {
+            d = 0;
+            for (let i = 0; i < this.n; i++)
+            {
+                for (let j = 0; j < this.m; j++)
+                {
+                    let [i_, j_, r] = this.transition(i, j, policy[i][j]);
+                    V_[i][j] = r + gamma*V[i_][j_]
+                    d = Math.max(d, Math.abs(V[i][j] - V_[i][j]));
+                }
+            }
+
+            for (let i = 0; i < this.n; i++)
+            {
+                for (let j = 0; j < this.m; j++) { V[i][j] = V_[i][j] }
+            }
+
+        } while (d > treshold);
+
+        return V;
+    }
+
     policyIteration()
     {
-        
+        let V = zeros2D(this.n, this.m);
+        let pi = randint2D(this.n, this.m, 4);
     }
 
     valueIteration()
