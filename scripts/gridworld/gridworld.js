@@ -6,6 +6,10 @@ const GRID = new Grid(N, M);
 let block_type_select, solver_type_select;
 let policy_iter_options, value_iter_options, SARSA_Q_options;
 
+let policy_iter_treshold, policy_iter_gamma;
+let value_iter_treshold, value_iter_gamma, value_iter_k;
+let SARSA_Q_treshold, SARSA_Q_gamma, SARSA_Q_alpha, SARSA_Q_eps_0, SARSA_Q_T;
+
 function setup() 
 {
     let cnv = createCanvas(M*CELL_SIZE + (M+1)*3, N*CELL_SIZE + (N+1)*3);
@@ -18,6 +22,21 @@ function setup()
     policy_iter_options = select('#policy_iter_options');
     value_iter_options = select('#value_iter_options');
     SARSA_Q_options = select('#SARSA_Q_options');
+
+    policy_iter_treshold = select('#policy_iter_treshold');
+    policy_iter_gamma = select('#policy_iter_gamma');
+
+    value_iter_treshold = select('#value_iter_treshold');
+    value_iter_gamma = select('#value_iter_gamma');
+    value_iter_k = select('#value_iter_k');
+
+    SARSA_Q_treshold = select('#SARSA_Q_treshold');
+    SARSA_Q_gamma = select('#SARSA_Q_gamma');
+    SARSA_Q_alpha = select('SARSA_Q_alpha');
+    SARSA_Q_eps_0 = select('#SARSA_Q_eps_0');
+    SARSA_Q_T = select('#SARSA_Q_T');
+
+    
 
     solver_type_select.changed(updateDom);
     updateDom();
