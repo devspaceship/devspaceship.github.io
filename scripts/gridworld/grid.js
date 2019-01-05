@@ -59,6 +59,29 @@ class Grid
         }
     }
 
+    // Actions : [UP, RIGHT, DOWN, LEFT]
+    transition(i, j, a)
+    {
+        let current = this.map[i][j];
+        if (current == TRAP || current == END) { return [i, j, 0]; }
+
+        let a2di = [-1, 0, 1, 0];
+        let a2dj = [0, 1, 0, -1];
+
+        let i_ = i + a2di[a];
+        let j_ = j + a2dj[a];
+
+        if (i_ < 0 || i_ >= N || j_ < 0 || j_ >= M) { return [i, j, -1]; }
+        else
+        {
+            let next = this.map[i_][j_]
+
+            if (next == START || next == AIR) { return [i_, j_, -1]; }
+            else if (next == TRAP) { return [i_, j_, -100]; }
+            else { return [i_, j_, 100]; }
+        }
+    }
+
     policyIteration()
     {
     }
