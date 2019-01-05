@@ -2,6 +2,8 @@ const N = 8;
 const M = 12;
 const CELL_SIZE = 50;
 const GRID = new Grid(N, M);
+let block_type_select, solver_type_select;
+let policy_iter_options, value_iter_options, SARSA_Q_options;
 
 function setup() 
 {
@@ -10,7 +12,13 @@ function setup()
     cnv.mousePressed(canvasClicked);
     cnv.mouseMoved(canvasClicked);
 
-    select('#solver-type').changed(updateDom);
+    block_type_select = select('#block-type');
+    solver_type_select = select('#solver-type');
+    policy_iter_options = select('#policy_iter_options');
+    value_iter_options = select('#value_iter_options');
+    SARSA_Q_options = select('#SARSA_Q_options');
+
+    solver_type_select.changed(updateDom);
     updateDom();
 
     select('#solve_button').mouseClicked(solve);
@@ -27,7 +35,7 @@ function draw()
 
 function solve()
 {
-    let solver = select('#solver-type').value();
+    let solver = solver_type_select.value();
     if (solver == "policy_iter") {GRID.policyIteration();}
     else if (solver == "value_iter") {GRID.valueIteration();}
     else if (solver == "sarsa") {GRID.SARSA();}
@@ -42,7 +50,7 @@ function canvasClicked()
         let j = Math.floor(mouseX/(CELL_SIZE+3));
         let current = GRID.map[i][j];
 
-        let block_type = select('#block-type').value();
+        let block_type = block_type_select.value();
         if (block_type == 'air' && current == TRAP) { GRID.map[i][j] = AIR; }
         else if (block_type == 'trap' && current == AIR) { GRID.map[i][j] = TRAP; }
         else if (block_type == 'start' && (current == AIR || current == TRAP))
@@ -82,23 +90,23 @@ function drawGrid()
 
 function updateDom()
 {
-    let solver = select('#solver-type').value();
+    let solver = solver_type_select.value();
     if (solver == "policy_iter")
     {
-        select('#policy_iter_options').show();
-        select('#value_iter_options').hide();
-        select('#SARSA_Q_options').hide();
+        policy_iter_options.show();
+        value_iter_options.hide();
+        SARSA_Q_options.hide();
     }
     else if (solver == "value_iter")
     {
-        select('#policy_iter_options').hide();
-        select('#value_iter_options').show();
-        select('#SARSA_Q_options').hide();
+        policy_iter_options.hide();
+        value_iter_options.show();
+        SARSA_Q_options.hide();
     }
     else if (solver == "sarsa" || solver == "q_learning")
     {
-        select('#policy_iter_options').hide();
-        select('#value_iter_options').hide();
-        select('#SARSA_Q_options').show();
+        policy_iter_options.hide();
+        value_iter_options.hide();
+        SARSA_Q_options.show();
     }
 }
