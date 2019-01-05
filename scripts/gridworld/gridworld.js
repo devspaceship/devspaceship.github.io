@@ -56,21 +56,23 @@ function setup()
     SARSA_Q_eps_0_label = select('#SARSA_Q_eps_0_value');
     SARSA_Q_T_label = select('#SARSA_Q_T_value');
 
-    policy_iter_treshold.changed(updateSlidersValues);
-    policy_iter_gamma.changed(updateSlidersValues);
+    policy_iter_treshold.input(updateSlidersValues);
+    policy_iter_gamma.input(updateSlidersValues);
 
-    value_iter_treshold.changed(updateSlidersValues);
-    value_iter_gamma.changed(updateSlidersValues);
-    value_iter_k.changed(updateSlidersValues);
+    value_iter_treshold.input(updateSlidersValues);
+    value_iter_gamma.input(updateSlidersValues);
+    value_iter_k.input(updateSlidersValues);
 
-    SARSA_Q_treshold.changed(updateSlidersValues);
-    SARSA_Q_gamma.changed(updateSlidersValues);
-    SARSA_Q_alpha.changed(updateSlidersValues);
-    SARSA_Q_eps_0.changed(updateSlidersValues);
-    SARSA_Q_T.changed(updateSlidersValues);
+    SARSA_Q_treshold.input(updateSlidersValues);
+    SARSA_Q_gamma.input(updateSlidersValues);
+    SARSA_Q_alpha.input(updateSlidersValues);
+    SARSA_Q_eps_0.input(updateSlidersValues);
+    SARSA_Q_T.input(updateSlidersValues);
 
     solver_type_select.changed(updateDom);
+
     updateDom();
+    updateSlidersValues();
 
     select('#solve_button').mouseClicked(solve);
 }
@@ -164,5 +166,16 @@ function updateDom()
 
 function updateSlidersValues()
 {
+    policy_iter_treshold_label.html('1E' + policy_iter_treshold.value());
+    policy_iter_gamma_label.html(policy_iter_gamma.value() + '%');
 
+    value_iter_treshold_label.html('1E' + value_iter_treshold.value());
+    value_iter_gamma_label.html(value_iter_gamma.value() + '%');
+    value_iter_k_label.html(value_iter_k.value());
+
+    SARSA_Q_treshold_label.html('1E' + SARSA_Q_treshold.value());
+    SARSA_Q_gamma_label.html(SARSA_Q_gamma.value() + '%');
+    SARSA_Q_alpha_label.html(SARSA_Q_alpha.value() + '%');
+    SARSA_Q_eps_0_label.html(SARSA_Q_eps_0.value() + '%');
+    SARSA_Q_T_label.html(SARSA_Q_T.value());
 }
