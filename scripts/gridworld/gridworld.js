@@ -38,7 +38,7 @@ function setup()
 
     SARSA_Q_treshold = select('#SARSA_Q_treshold');
     SARSA_Q_gamma = select('#SARSA_Q_gamma');
-    SARSA_Q_alpha = select('SARSA_Q_alpha');
+    SARSA_Q_alpha = select('#SARSA_Q_alpha');
     SARSA_Q_eps_0 = select('#SARSA_Q_eps_0');
     SARSA_Q_T = select('#SARSA_Q_T');
 
@@ -52,7 +52,7 @@ function setup()
 
     SARSA_Q_treshold_label = select('#SARSA_Q_treshold_value');
     SARSA_Q_gamma_label = select('#SARSA_Q_gamma_value');
-    SARSA_Q_alpha_label = select('SARSA_Q_alpha_value');
+    SARSA_Q_alpha_label = select('#SARSA_Q_alpha_value');
     SARSA_Q_eps_0_label = select('#SARSA_Q_eps_0_value');
     SARSA_Q_T_label = select('#SARSA_Q_T_value');
 
