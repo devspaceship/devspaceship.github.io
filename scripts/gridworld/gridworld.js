@@ -88,8 +88,16 @@ function draw()
 
 function solve()
 {
+    GRID.solved = false;
+    loop();
+
     let solver = solver_type_select.value();
-    if (solver == "policy_iter") {GRID.policyIteration();}
+    if (solver == "policy_iter")
+    {
+        let tre = Math.pow(10, policy_iter_treshold.value());
+        let gamma = policy_iter_gamma.value()/100;
+        GRID.policyIteration(tre, gamma);
+    }
     else if (solver == "value_iter") {GRID.valueIteration();}
     else if (solver == "sarsa") {GRID.SARSA();}
     else {GRID.QLearning();}

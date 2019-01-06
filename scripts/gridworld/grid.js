@@ -59,6 +59,25 @@ class Grid
                 rect(j*(CELL_SIZE+3)+3, i*(CELL_SIZE+3)+3, CELL_SIZE, CELL_SIZE);
             }
         }
+
+        if (this.solved)
+        {
+            this.drawPolicy()
+        }
+    }
+
+    drawPolicy()
+    {
+        for (let i = 0; i < this.n; i++) 
+        {
+            for (let j = 0; j < this.m; j++) 
+            {
+                if (this.map[i][j] == START || this.map[i][j] == AIR)
+                {
+                    drawArrow(i, j, this.pi[i][j]);
+                }
+            }
+        }
     }
 
     // Actions : [UP, RIGHT, DOWN, LEFT]
@@ -170,6 +189,8 @@ class Grid
 
         this.pi = pi;
         this.solved = true;
+
+        loop();
     }
 
     valueIteration()
