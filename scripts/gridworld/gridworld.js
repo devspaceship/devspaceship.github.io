@@ -113,8 +113,8 @@ function solve()
         let eps_0 = SARSA_Q_eps_0.value()/100;
         let T = SARSA_Q_T.value();
 
-        if (solver == "sarsa") {GRID.SARSA(N, gamma, alpha, eps_0, T);}
-        else {GRID.QLearning(N, gamma, alpha, eps_0, T);}
+        if (solver == "sarsa") {GRID.SARSA_Q(N, gamma, alpha, eps_0, T);}
+        else {GRID.SARSA_Q(N, gamma, alpha, eps_0, T, true);}
     }
 }
 

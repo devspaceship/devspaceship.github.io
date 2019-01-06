@@ -176,6 +176,13 @@ class Grid
         return pi;
     }
 
+    isTerminal(i, j)
+    {
+        let state = this.map[i][j];
+        if (state == END || state == TRAP) { return true; }
+        else { return false; }
+    }
+
     policyIteration(treshold, gamma)
     {
         let V = zeros2D(this.n, this.m);
@@ -265,27 +272,38 @@ class Grid
         loop();
     }
 
-    SARSA(N, gamma, alpha, eps_0, T)
+    SARSA_Q(N, gamma, alpha, eps_0, T, Q_mode=false)
     {
         let Q = zeros3D(this.n, this.m, 4);
-        let d;
 
-        for (let t = 1; t < N; t++)
+        for (let t = 1; t <= N; t++)
         {
             let i = Math.floor(this.n*Math.random());
             let j = Math.floor(this.m*Math.random());
-            let pi = Q2policy(Q);
+            let pi = this.Q2policy(Q);
             let eps = getEps(eps_0, T, t);
             let a = epsPolicy(pi, eps, i, j);
 
-            let [i_, j_, r] = this.transition(i, j, a);
-            let a_ = epsPolicy(pi, eps, i_, j_);
+            do
+            {
+                let [i_, j_, r] = this.transition(i, j, a);
+                let a_ = epsPolicy(pi, eps, i_, j_);
+                if (Q_mode)
+                {
+                    Q[i][j][a] = (1-alpha)*Q[i][j][a] + alpha*(r + gamma*Math.max(...Q[i_][j_]));
+                }
+                else
+                {
+                    Q[i][j][a] = (1-alpha)*Q[i][j][a] + alpha*(r + gamma*Q[i_][j_][a_]);
+                }
+                [i, j, a] = [i_, j_, a_]
+            } while (!this.isTerminal(i, j));
         }
-    }
 
-    QLearning(N, gamma, alpha, eps_0, T)
-    {
+        this.pi = this.Q2policy(Q);
+        this.solved = true;
 
+        loop();
     }
 }
 
