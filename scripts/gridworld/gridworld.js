@@ -83,11 +83,6 @@ function draw()
     GRID.draw();
     drawGrid();
 
-    for (let i = 0; i < GRID.n; i++)
-    {
-        drawArrow(i, 0, 0);
-    }
-
     noLoop();
 }
 

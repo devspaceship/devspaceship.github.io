@@ -232,15 +232,19 @@ function zeros3D(n, m, k)
 
 function drawArrow(i, j, a)
     {
-        stroke(200, 175);
+        stroke(175, 200, 175, 200);
         strokeWeight(4);
 
         let x = j*(CELL_SIZE+3)+3 + CELL_SIZE/2;
         let y = i*(CELL_SIZE+3)+3 + CELL_SIZE/2;
         translate(x, y);
+        rotate(PI/2*(a - 1));
+
         let scale = 0.35;
         line(-scale*CELL_SIZE, 0, scale*CELL_SIZE, 0);
         line(scale*CELL_SIZE, 0, scale/2*CELL_SIZE, scale/2*CELL_SIZE);
         line(scale*CELL_SIZE, 0, scale/2*CELL_SIZE, -scale/2*CELL_SIZE);
+
+        rotate(PI/2*(1 - a));
         translate(-x, -y);
     }
