@@ -82,50 +82,7 @@ class Grid
         }
     }
 
-    zeros2D(n, m)
-    {
-        let zeros = new Array(n);
-        for (let i = 0; i < n; i++)
-        {
-            zeros[i] = new Array(m);
-            zeros[i].fill(0);
-        }
-
-        return zeros;
-    }
-
-    randint2D(n, m, k)
-    {
-        let rand = new Array(n);
-        for (let i = 0; i < n; i++)
-        {
-            rand[i] = new Array(m);
-            for (let j = 0; j < m; j++)
-            {
-                rand[i][j] = Math.floor(k*Math.random());
-            }
-        }
-
-        return rand;
-    }
-
-    zeros3D(n, m, k)
-    {
-        let zeros = new Array(n);
-        for (let i = 0; i < n; i++)
-        {
-            zeros[i] = new Array(m);
-            for (let j = 0; j < m; j++)
-            {
-                zeros[i][j] = new Array(k);
-                zeros[i][j].fill(0);
-            }
-        }
-
-        return zeros;
-    }
-
-    policyEvaluation(policy, treshold, gamma)
+    policy2V(policy, treshold, gamma)
     {
         let V = zeros2D(this.n, this.m);
         let V_ = zeros2D(this.n, this.m);
@@ -154,10 +111,62 @@ class Grid
         return V;
     }
 
-    policyIteration()
+    V2policy(V, gamma)
+    {
+        let pi = zeros2D(this.n, this.m);
+
+        for (let i = 0; i < this.n; i++)
+        {
+            for (let j = 0; j < this.m; j++)
+            {
+                let best = Number.NEGATIVE_INFINITY;
+                let best_action = 0;
+
+                for (let a = 0; a < 4; a++)
+                {
+                    let [i_, j_, r] = this.transition(i, j, a);
+                    let trial = r + gamma*V[i_][j_];
+                    if (trial > best)
+                    {
+                        best = trial;
+                        best_action = a;
+                    }
+                }
+
+                pi[i][j] = best_action;
+            }
+        }
+
+        return pi;
+    }
+
+    policyIteration(treshold, gamma)
     {
         let V = zeros2D(this.n, this.m);
         let pi = randint2D(this.n, this.m, 4);
+
+        let stable;
+        do
+        {
+            stable = true;
+
+            V = this.policy2V(pi, treshold, gamma);
+            let pi_ = this.V2policy(V, gamma);
+            
+            for (let i = 0; i < this.n; i++)
+            {
+                for (let j = 0; j < this.m; j++)
+                {
+                    if (pi[i][j] != pi_[i][j])
+                    {
+                        stable = false;
+                        pi[i][j] = pi_[i][j];
+                    }
+                }
+            }
+        } while (!stable);
+
+        return pi;
     }
 
     valueIteration()
@@ -174,3 +183,61 @@ class Grid
 
     }
 }
+
+function zeros2D(n, m)
+{
+    let zeros = new Array(n);
+    for (let i = 0; i < n; i++)
+    {
+        zeros[i] = new Array(m);
+        zeros[i].fill(0);
+    }
+
+    return zeros;
+}
+
+function randint2D(n, m, k)
+{
+    let rand = new Array(n);
+    for (let i = 0; i < n; i++)
+    {
+        rand[i] = new Array(m);
+        for (let j = 0; j < m; j++)
+        {
+            rand[i][j] = Math.floor(k*Math.random());
+        }
+    }
+
+    return rand;
+}
+
+function zeros3D(n, m, k)
+{
+    let zeros = new Array(n);
+    for (let i = 0; i < n; i++)
+    {
+        zeros[i] = new Array(m);
+        for (let j = 0; j < m; j++)
+        {
+            zeros[i][j] = new Array(k);
+            zeros[i][j].fill(0);
+        }
+    }
+
+    return zeros;
+}
+
+function drawArrow(i, j, a)
+    {
+        stroke(200, 175);
+        strokeWeight(4);
+
+        let x = j*(CELL_SIZE+3)+3 + CELL_SIZE/2;
+        let y = i*(CELL_SIZE+3)+3 + CELL_SIZE/2;
+        translate(x, y);
+        let scale = 0.35;
+        line(-scale*CELL_SIZE, 0, scale*CELL_SIZE, 0);
+        line(scale*CELL_SIZE, 0, scale/2*CELL_SIZE, scale/2*CELL_SIZE);
+        line(scale*CELL_SIZE, 0, scale/2*CELL_SIZE, -scale/2*CELL_SIZE);
+        translate(-x, -y);
+    }
