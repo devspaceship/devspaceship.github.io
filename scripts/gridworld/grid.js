@@ -16,6 +16,8 @@ class Grid
         this.end_i = n - 1;
         this.end_j = m - 1;
 
+        this.solved = false;
+
         if (n == 8 && m == 12)
         {
             this.map = [[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -166,7 +168,8 @@ class Grid
             }
         } while (!stable);
 
-        return pi;
+        this.pi = pi;
+        this.solved = true;
     }
 
     valueIteration()

@@ -109,14 +109,23 @@ function canvasClicked()
         let current = GRID.map[i][j];
 
         let block_type = block_type_select.value();
-        if (block_type == 'air' && current == TRAP) { GRID.map[i][j] = AIR; }
-        else if (block_type == 'trap' && current == AIR) { GRID.map[i][j] = TRAP; }
+        if (block_type == 'air' && current == TRAP)
+        {
+            GRID.map[i][j] = AIR;
+            GRID.solved = false;
+        }
+        else if (block_type == 'trap' && current == AIR)
+        {
+            GRID.map[i][j] = TRAP;
+            GRID.solved = false;
+        }
         else if (block_type == 'start' && (current == AIR || current == TRAP))
         {
             GRID.map[GRID.start_i][GRID.start_j] = AIR;
             GRID.start_i = i;
             GRID.start_j = j;
             GRID.map[i][j] = START;
+            GRID.solved = false;
         }
         else if (block_type == 'end' && (current == AIR || current == TRAP))
         {
@@ -124,6 +133,7 @@ function canvasClicked()
             GRID.end_i = i;
             GRID.end_j = j;
             GRID.map[i][j] = END;
+            GRID.solved = false;
         }
 
         loop();
