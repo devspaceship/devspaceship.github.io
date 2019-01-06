@@ -8,11 +8,11 @@ let policy_iter_options, value_iter_options, SARSA_Q_options;
 
 let policy_iter_treshold, policy_iter_gamma;
 let value_iter_treshold, value_iter_gamma, value_iter_k;
-let SARSA_Q_treshold, SARSA_Q_gamma, SARSA_Q_alpha, SARSA_Q_eps_0, SARSA_Q_T;
+let SARSA_Q_N, SARSA_Q_gamma, SARSA_Q_alpha, SARSA_Q_eps_0, SARSA_Q_T;
 
 let policy_iter_treshold_label, policy_iter_gamma_label;
 let value_iter_treshold_label, value_iter_gamma_label, value_iter_k_label;
-let SARSA_Q_treshold_label, SARSA_Q_gamma_label, SARSA_Q_alpha_label;
+let SARSA_Q_N_label, SARSA_Q_gamma_label, SARSA_Q_alpha_label;
 let SARSA_Q_eps_0_label, SARSA_Q_T_label;
 
 function setup() 
@@ -36,7 +36,7 @@ function setup()
     value_iter_gamma = select('#value_iter_gamma');
     value_iter_k = select('#value_iter_k');
 
-    SARSA_Q_treshold = select('#SARSA_Q_treshold');
+    SARSA_Q_N = select('#SARSA_Q_N');
     SARSA_Q_gamma = select('#SARSA_Q_gamma');
     SARSA_Q_alpha = select('#SARSA_Q_alpha');
     SARSA_Q_eps_0 = select('#SARSA_Q_eps_0');
@@ -50,7 +50,7 @@ function setup()
     value_iter_gamma_label = select('#value_iter_gamma_value');
     value_iter_k_label = select('#value_iter_k_value');
 
-    SARSA_Q_treshold_label = select('#SARSA_Q_treshold_value');
+    SARSA_Q_N_label = select('#SARSA_Q_N_value');
     SARSA_Q_gamma_label = select('#SARSA_Q_gamma_value');
     SARSA_Q_alpha_label = select('#SARSA_Q_alpha_value');
     SARSA_Q_eps_0_label = select('#SARSA_Q_eps_0_value');
@@ -63,7 +63,7 @@ function setup()
     value_iter_gamma.input(updateSlidersValues);
     value_iter_k.input(updateSlidersValues);
 
-    SARSA_Q_treshold.input(updateSlidersValues);
+    SARSA_Q_N.input(updateSlidersValues);
     SARSA_Q_gamma.input(updateSlidersValues);
     SARSA_Q_alpha.input(updateSlidersValues);
     SARSA_Q_eps_0.input(updateSlidersValues);
@@ -105,8 +105,17 @@ function solve()
         let k = value_iter_k.value();
         GRID.valueIteration(tre, gamma, k);
     }
-    else if (solver == "sarsa") {GRID.SARSA();}
-    else {GRID.QLearning();}
+    else
+    {
+        let N = SARSA_Q_N.value();
+        let gamma = SARSA_Q_gamma.value()/100;
+        let alpha = SARSA_Q_alpha.value()/100;
+        let eps_0 = SARSA_Q_eps_0.value()/100;
+        let T = SARSA_Q_T.value();
+
+        if (solver == "sarsa") {GRID.SARSA(N, gamma, alpha, eps_0, T);}
+        else {GRID.QLearning(N, gamma, alpha, eps_0, T);}
+    }
 }
 
 function canvasClicked()
@@ -197,7 +206,7 @@ function updateSlidersValues()
     value_iter_gamma_label.html(value_iter_gamma.value() + '%');
     value_iter_k_label.html(value_iter_k.value());
 
-    SARSA_Q_treshold_label.html('1E' + SARSA_Q_treshold.value());
+    SARSA_Q_N_label.html(SARSA_Q_N.value());
     SARSA_Q_gamma_label.html(SARSA_Q_gamma.value() + '%');
     SARSA_Q_alpha_label.html(SARSA_Q_alpha.value() + '%');
     SARSA_Q_eps_0_label.html(SARSA_Q_eps_0.value() + '%');

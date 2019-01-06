@@ -112,9 +112,9 @@
     <div id="SARSA_Q_options">
       <div class="row">
         <div class="four columns">
-            <label for="SARSA_Q_treshold">Treshold</label>
-            <input type="range" min="-8" max="-2" value="-5" id="SARSA_Q_treshold">
-            <div id="SARSA_Q_treshold_value"></div>
+            <label for="SARSA_Q_N">Number of iterations</label>
+            <input type="range" min="100" max="1000" value="200" id="SARSA_Q_N">
+            <div id="SARSA_Q_N_value"></div>
         </div>
         <div class="four columns">
             <label for="SARSA_Q_gamma">Gamma</label>
@@ -424,12 +424,10 @@ returns = [[[[]]*4 for _ in range(M)] for _ in range(N)]
       represents the decreasing period. Choosing a random action with probability \(\epsilon\) and the greedy action otherwise
       is called an \(\epsilon\)-greedy policy.
     </p>
-<pre><code class='language-python'>old_Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
-new_Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
+<pre><code class='language-python'>Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
 pi = [[randint(0, 3) for _ in range(M)] for _ in range(N)]
-t = 0
 
-while True:
+for t in range(num_iter):
   i = randint(0, N - 1)
   j = randint(0, M - 1)
   a = choose_action(pi, i, j, eps_0, T, t)
@@ -438,19 +436,13 @@ while True:
     i_, j_, r = transition(i, j, a)
     a_ = choose_action(pi, i_, j_, eps_0, T, t)
 
-    new_Q[i][j][a] = (1 - alpha)*old_Q[i][j][a] + alpha*(r + gamma*old_Q[i_][j_][a_])
+    Q[i][j][a] = (1 - alpha)*Q[i][j][a] + alpha*(r + gamma*Q[i_][j_][a_])
     
     i, j, a = i_, j_, a_
     if is_terminal(i, j):
       break
 
-  pi = Q_to_policy(new_Q)
-
-  if delta(old_Q, new_Q) < threshold:
-    break
-
-  old_Q = copy.deepcopy(new_Q)
-  t = t+1
+  pi = Q_to_policy(Q)
 </code></pre>
     <p>
       Remark that we do not completely update \(Q(s,a)\) to \(r + \gamma*Q(s', a')\),
@@ -463,12 +455,10 @@ while True:
     instead of choosing a second action following the \(\epsilon\)-greedy policy,
     we choose the best action available in state \(s'\):
     \(\max_{a'} Q(s', a')\) which is, in fact, the state-value of \(s'\): \(V(s')\) for the greedy policy.
-<pre><code class='language-python'>old_Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
-new_Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
+<pre><code class='language-python'>Q = [[[0]*4 for _ in range(M)] for _ in range(N)]
 pi = [[randint(0, 3) for _ in range(M)] for _ in range(N)]
-t = 0
 
-while True:
+for t in range(num_iter):
   i = randint(0, N - 1)
   j = randint(0, M - 1)
   a = choose_action(pi, i, j, eps_0, T, t)
@@ -477,19 +467,13 @@ while True:
     i_, j_, r = transition(i, j, a)
     a_ = choose_action(pi, i_, j_, eps_0, T, t)
 
-    new_Q[i][j][a] = (1 - alpha)*old_Q[i][j][a] + alpha*(r + gamma*max(old_Q[i_][j_]))
+    Q[i][j][a] = (1 - alpha)*Q[i][j][a] + alpha*(r + gamma*max(old_Q[i_][j_]))
     
     i, j, a = i_, j_, a_
     if is_terminal(i, j):
       break
 
-  pi = Q_to_policy(new_Q)
-
-  if delta(old_Q, new_Q) < threshold:
-    break
-
-  old_Q = copy.deepcopy(new_Q)
-  t = t+1
+  pi = Q_to_policy(Q)
 </code></pre>
 
     <h2>Final Note</h2>
@@ -510,6 +494,7 @@ while True:
       <li>Create DOM menu - <em>Done</em></li>
       <li>Display values next to sliders - <em>Done</em></li>
       <li>Implement the algorithms</li>
+      <li>Tune the sliders</li>
       <li>Add explaining images</li>
     </ul>
 

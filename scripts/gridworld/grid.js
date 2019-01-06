@@ -161,6 +161,21 @@ class Grid
         return pi;
     }
 
+    Q2policy(Q)
+    {
+        let pi = zeros2D(this.n, this.m);
+
+        for (let i = 0; i < this.n; i++)
+        {
+            for (let j = 0; j < this.m; j++)
+            {
+                pi[i][j] = Q[i][j].indexOf(Math.max(...Q[i][j]))
+            }
+        }
+
+        return pi;
+    }
+
     policyIteration(treshold, gamma)
     {
         let V = zeros2D(this.n, this.m);
@@ -250,15 +265,34 @@ class Grid
         loop();
     }
 
-    SARSA()
+    SARSA(N, gamma, alpha, eps_0, T)
+    {
+        let Q = zeros3D(this.n, this.m, 4);
+        let d;
+
+        for (let t = 1; t < N; t++)
+        {
+            let i = Math.floor(this.n*Math.random());
+            let j = Math.floor(this.m*Math.random());
+            let pi = Q2policy(Q);
+            let eps = getEps(eps_0, T, t);
+            let a = epsPolicy(pi, eps, i, j);
+
+            let [i_, j_, r] = this.transition(i, j, a);
+            let a_ = epsPolicy(pi, eps, i_, j_);
+        }
+    }
+
+    QLearning(N, gamma, alpha, eps_0, T)
     {
 
     }
+}
 
-    QLearning()
-    {
-
-    }
+function epsPolicy(policy, eps, i, j)
+{
+    if (Math.random() < eps) { return Math.floor(4*Math.random()); }
+    else { return policy[i][j]; }
 }
 
 function zeros2D(n, m)
@@ -302,6 +336,11 @@ function zeros3D(n, m, k)
     }
 
     return zeros;
+}
+
+function getEps(eps_0, T, t)
+{
+    return eps_0/(1 + t/T);
 }
 
 function drawArrow(i, j, a)
