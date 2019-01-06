@@ -98,7 +98,13 @@ function solve()
         let gamma = policy_iter_gamma.value()/100;
         GRID.policyIteration(tre, gamma);
     }
-    else if (solver == "value_iter") {GRID.valueIteration();}
+    else if (solver == "value_iter")
+    {
+        let tre = Math.pow(10, value_iter_treshold.value());
+        let gamma = value_iter_gamma.value()/100;
+        let k = value_iter_k.value();
+        GRID.valueIteration(tre, gamma, k);
+    }
     else if (solver == "sarsa") {GRID.SARSA();}
     else {GRID.QLearning();}
 }

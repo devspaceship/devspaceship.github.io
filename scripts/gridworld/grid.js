@@ -193,8 +193,61 @@ class Grid
         loop();
     }
 
-    valueIteration()
+    valueIterationStep(V, policy, gamma)
     {
+        let V_ = zeros2D(this.n, this.m);
+
+        let d = 0;
+        for (let i = 0; i < this.n; i++)
+        {
+            for (let j = 0; j < this.m; j++)
+            {
+                let [i_, j_, r] = this.transition(i, j, policy[i][j]);
+                V_[i][j] = r + gamma*V[i_][j_]
+                d = Math.max(d, Math.abs(V[i][j] - V_[i][j]));
+            }
+        }
+
+        return [V_, d];
+    }
+
+    isStable(pi, pi_)
+    {
+        let stable = true;
+        for (let i = 0; i < this.n; i++)
+        {
+            for (let j = 0; j < this.m; j++)
+            {
+                if (pi[i][j] != pi_[i][j]) { stable = false; }
+            }
+        }
+
+        return stable;
+    }
+
+    valueIteration(treshold, gamma, k)
+    {
+        let V = zeros2D(this.n, this.m);
+        let pi = randint2D(this.n, this.m, 4);
+
+        let stable, d;
+        do
+        {
+            for (let i = 0; i < k; i++)
+            {
+                [V, d] = this.valueIterationStep(V, pi, gamma);
+            }
+
+            let pi_ = this.V2policy(V, gamma);
+            stable = this.isStable(pi, pi_);
+
+            pi = pi_;
+        } while (!stable || d > treshold);
+
+        this.pi = pi;
+        this.solved = true;
+
+        loop();
     }
 
     SARSA()
@@ -252,20 +305,20 @@ function zeros3D(n, m, k)
 }
 
 function drawArrow(i, j, a)
-    {
-        stroke(175, 200, 175, 200);
-        strokeWeight(4);
+{
+    stroke(175, 230, 175, 210);
+    strokeWeight(4);
 
-        let x = j*(CELL_SIZE+3)+3 + CELL_SIZE/2;
-        let y = i*(CELL_SIZE+3)+3 + CELL_SIZE/2;
-        translate(x, y);
-        rotate(PI/2*(a - 1));
+    let x = j*(CELL_SIZE+3)+3 + CELL_SIZE/2;
+    let y = i*(CELL_SIZE+3)+3 + CELL_SIZE/2;
+    translate(x, y);
+    rotate(PI/2*(a - 1));
 
-        let scale = 0.35;
-        line(-scale*CELL_SIZE, 0, scale*CELL_SIZE, 0);
-        line(scale*CELL_SIZE, 0, scale/2*CELL_SIZE, scale/2*CELL_SIZE);
-        line(scale*CELL_SIZE, 0, scale/2*CELL_SIZE, -scale/2*CELL_SIZE);
+    let scale = 0.35;
+    line(-scale*CELL_SIZE, 0, scale*CELL_SIZE, 0);
+    line(scale*CELL_SIZE, 0, scale/2*CELL_SIZE, scale/2*CELL_SIZE);
+    line(scale*CELL_SIZE, 0, scale/2*CELL_SIZE, -scale/2*CELL_SIZE);
 
-        rotate(PI/2*(1 - a));
-        translate(-x, -y);
-    }
+    rotate(PI/2*(1 - a));
+    translate(-x, -y);
+}
