@@ -171,6 +171,7 @@
         <li>a reward function \(R\), where \(R(s, s')\) is the reward you get when transitionning from state \(s\) to \(s'\).</li>
       </ul>
     </p>
+    <img class="u-max-full-width" src="/images/gridworld/MDP.png" alt="Finite Deterministic Markov Decision Process"> <!-- width="128" height="128"> -->
 
     <h2>What is a policy, a state value and a Q-function ?</h2>
     <p>We first define the concept of <em>policy</em>.
@@ -295,6 +296,7 @@
 </code></pre>
 
     <h3>Final Algorithm</h3>
+    <img class="u-max-full-width" src="/images/gridworld/Policy Iteration.png" alt="Policy Iteration">
     We write an helper function to determine if the policy is stable:
 <pre><code class="language-python">def is_stable(p1, p2):
   stable = True
@@ -334,6 +336,7 @@ while True:
     </p>
 
     <h2>Value Iteration</h2>
+    <img class="u-max-full-width" src="/images/gridworld/Value Iteration.png" alt="Value Iteration">
     <p>
       In Policy Iteration, we were estimating the state-value function of the policies until reasonable convergence.
       In Value Iteration, we instantly greedify the policy between the sweeps for state-value evaluation.
@@ -486,17 +489,6 @@ for t in range(num_iter):
       To have a better view of Reinforcement Learning, I recommend this excellent book about it
       written by <a href="http://incompleteideas.net/book/bookdraft2017nov5.pdf">Sutton & Barto</a>
     </p>
-
-    <h2>Still To Do</h2>
-    <ul>
-      <li>Create gridworld - <em>Done</em></li>
-      <li>Finsih algorithm explainations - <em>Done</em></li>
-      <li>Create DOM menu - <em>Done</em></li>
-      <li>Display values next to sliders - <em>Done</em></li>
-      <li>Implement the algorithms - <em>Done</em></li>
-      <li>Tune the sliders</li>
-      <li>Add explaining images</li>
-    </ul>
 
     <!-- Licenses -->
     <div style="margin-top: 10%">
