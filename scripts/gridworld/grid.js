@@ -103,6 +103,13 @@ class Grid
         }
     }
 
+    isTerminal(i, j)
+    {
+        let state = this.map[i][j];
+        if (state == END || state == TRAP) { return true; }
+        else { return false; }
+    }
+
     policy2V(policy, treshold, gamma)
     {
         let V = zeros2D(this.n, this.m);
@@ -174,13 +181,6 @@ class Grid
         }
 
         return pi;
-    }
-
-    isTerminal(i, j)
-    {
-        let state = this.map[i][j];
-        if (state == END || state == TRAP) { return true; }
-        else { return false; }
     }
 
     policyIteration(treshold, gamma)
