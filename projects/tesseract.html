@@ -119,7 +119,43 @@ const product = (...sets) =>
 
     <h2>Rotating the tesseract</h2>
     <p>
-      
+      Okay, now we have a tesseract and a way to project it into our 3D space.
+      But it is not moving yet, for this we need to rotate it and not in our 3D space,
+      otherwise we would just have a static projection rotating on itself.<br/>
+      A rotation matrix in \(n\)-dimension is a matrix which inversed is its transpose and have a determinant of 1.
+      This group is called the special orthogonal group of rank n : \(SO(n) = \{M : M^TM = MM^T = I \text{ and } |M| = 1\}\).
+      Here is the matrix we are going to use:
+      \[
+        R(\alpha, \beta, t) = 
+        \begin{pmatrix} 
+        R_{\alpha t} & 0_2 \\
+        0_2 & R_{\beta t} 
+        \end{pmatrix}
+      \]
+      Using the already known results for 2D rotations we can verify that \(R \in SO(4)\):
+      \[
+        R^T =
+        \begin{pmatrix} 
+        R_{\alpha t}^T & 0_2 \\
+        0_2 & R_{\beta t}^T 
+        \end{pmatrix} = 
+        \begin{pmatrix} 
+        R_{-\alpha t} & 0_2 \\
+        0_2 & R_{-\beta t} 
+        \end{pmatrix}\\
+        \text{So, } RR^T = R^TR =
+        \begin{pmatrix} 
+        R_{0} & 0_2 \\
+        0_2 & R_{0} 
+        \end{pmatrix} =
+        \begin{pmatrix} 
+        I_2 & 0_2 \\
+        0_2 & I_2
+        \end{pmatrix}
+      \]
+      Also, \(|R| = |R_{\alpha t}||R_{\beta t}| = 1\)<br>
+      \(\alpha\) and \(\beta\) represent, respectively, the rotation speeds for the XY plane and the ZW plane.
+      You can also change those parameter's value with the sliders.
     </p>
 
     <!-- Licenses -->
