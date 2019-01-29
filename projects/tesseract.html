@@ -13,12 +13,12 @@
   <link rel="stylesheet" href="/css/normalize.css">
   <link rel="stylesheet" href="/css/skeleton.css">
   <link rel="stylesheet" href="/css/custom.css">
-  <!-- <link rel="stylesheet" href="/prism/prism.css"> -->
+  <link rel="stylesheet" href="/prism/prism.css">
 
   <link rel="icon" type="image/png" href="/images/favicon.png">
 
   <!-- LateX -->
-  <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script> -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
 
   <script src="/p5/p5.min.js"></script>
   <script src="/p5/addons/p5.dom.min.js"></script>
@@ -26,7 +26,7 @@
   <script src="/scripts/tesseract/matrix.js"></script>
   <script src="/scripts/tesseract/tesseract.js"></script>
 
-  <!-- <script src="/prism/prism.js"></script> -->
+  <script src="/prism/prism.js"></script>
 </head>
 
 <body>
@@ -44,9 +44,83 @@
       </div>
     </div>
     <h1 style="margin-top: 2%"><strong>U</strong>nderstanding <strong>A</strong>rtificial <strong>I</strong>ntelligence</h1>
+
+    <h2>Tesseract Projection</h2>
     
     <!--Content here-->
     <div id="canvas-holder" style="margin: 0 auto;"></div>
+
+    <div class="row">
+      <div class="four columns">
+          <label for="slider_d">d</label>
+          <input type="range" min="175" max="1000" value="200" id="slider_d">
+      </div>
+      <div class="four columns">
+          <label for="slider_xy">\(\alpha\)</label>
+          <input type="range" min="1" max="15" value="8" id="slider_xy"">
+      </div>
+      <div class="four columns">
+        <label for="slider_zw">\(\beta\)</label>
+        <input type="range" min="1" max="15" value="4" id="slider_zw">
+      </div>
+    </div>
+
+    <h2>What exactly is a tesseract ?</h2>
+    <p>A tesseract is just a four-dimensional cube.
+      We can also generalize the cube in \(n\) dimensions, 
+      in which case it is simply called a \(n\)-hypercube.
+      But how exactly do we generalize this idea of a cube ?
+      Let's start with dimension \(0\), a point.
+      To transition to dimension \(1\), you transform the point into a continuum of points to get a line.
+      To go to dimension \(2\), we transform this line into a continuum of lines to get a square.
+      And to get the cube, we repeat the operation with a continuum of planes.
+      You may have noticed, that here, we were always extruding the next shape from the previous one in an orthogonal manner.
+      So how are we supposed to extrude the cube into a tesseract ?
+      Well, we simply need another dimension which is orthogonal to the three firsts, a fourth one.
+      However, we live in a 3D world, so we can't really visualize what it is supposed to look like,
+      but what we can do is project it in our 3D world in a way that show its important features and connections.
+      For our projection using the p5.js library, we are going to define the tesseract of size \(2s\) by its points:
+      \[
+      line = \{-s, s\}\\
+      square = \{(-s, -s), (-s, s), (s, -s), (s, s)\} = \{-s, s\} \times \{-s, s\} = \{-s, s\}^2\\
+      cube = \{-s, s\} \times \{-s, s\} \times \{-s, s\} = \{-s, s\}^3\\
+      tesseract = \{-s, s\}^4
+      \]
+      Here, \(\times\) represents the cartesian product.
+      <a href="https://eddmann.com/posts/cartesian-product-in-javascript/">Edd Mann</a>
+      created a very neat code snippet for doing cartesian products in JavaScript, so we are going to use it.
+<pre><code class="language-python">const flatten = (arr) => [].concat.apply([], arr);
+
+const product = (...sets) =>
+  sets.reduce((acc, set) =>
+    flatten(acc.map(x => set.map(y => [ ...x, y ]))),
+    [[]]);
+</code></pre>
+      Once we have our points, we need to determine which points we connect.
+      To do this, we only have to check the number of dimensions where 2 points differ,
+      if it is 1 then, it means the 2 points are connected.
+    </p>
+
+    <h2>Projecting the tesseract</h2>
+    <p>
+      We are going to use the following projection:
+      \[
+      \pi : \mathbb{R}^4 \rightarrow \mathbb{R}^3\\
+      (x, y, z, w) \rightarrow \frac{(x, y, z)}{\lambda(w)}\\
+      \lambda(w) = \frac{d}{d - w} \text{ with } d > \max(w)
+      \]
+      This is actually a <a href="https://en.wikipedia.org/wiki/Stereographic_projection">stereographic projection</a>
+      onto the canonical 3D space. Basically it just scales a point given its 4th coordonate.
+      If a point is in the space w = 0, it stays the same.
+      If w < 0, it is going to scale down.
+      And if w > 0, it is gonna scale up and approach an infinite scaling as w approach d.
+      Here, d is a parameter of our projection, you can try changing it with the slider under the canvas.
+    </p>
+
+    <h2>Rotating the tesseract</h2>
+    <p>
+      
+    </p>
 
     <!-- Licenses -->
     <div style="margin-top: 10%" class="row">
@@ -63,8 +137,8 @@
           <a href="https://www.facebook.com/devspaceship"><img src="/images/social/facebook.png" alt="Facebook" height="48px"></a>
       </div>
     </div>
-    <div style="margin-top: 2%">
-        Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> 
+    <div style="margin-top: 2%">0
+        Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> 0
         from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> 
         are licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
     </div>

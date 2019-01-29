@@ -1,3 +1,10 @@
+const flatten = (arr) => [].concat.apply([], arr);
+
+const product = (...sets) =>
+  sets.reduce((acc, set) =>
+    flatten(acc.map(x => set.map(y => [ ...x, y ]))),
+    [[]]);
+
 function createVector4(x, y, z, w)
 {
     let vec = new Array(4);
@@ -16,31 +23,45 @@ function createVector4(x, y, z, w)
 
 function createTesseract(size)
 {
-    let tess = new Array(16);
-    
-    let s = size;
-
-    tess[0] = createVector4(-s, -s, s, s);
-    tess[1] = createVector4(s, -s, s, s);
-    tess[2] = createVector4(s, s, s, s);
-    tess[3] = createVector4(-s, s, s, s);
-
-    tess[4] = createVector4(-s, -s, -s, s);
-    tess[5] = createVector4(s, -s, -s, s);
-    tess[6] = createVector4(s, s, -s, s);
-    tess[7] = createVector4(-s, s, -s, s);
-
-    tess[8] = createVector4(-s, -s, s, -s);
-    tess[9] = createVector4(s, -s, s, -s);
-    tess[10] = createVector4(s, s, s, -s);
-    tess[11] = createVector4(-s, s, s, -s);
-
-    tess[12] = createVector4(-s, -s, -s, -s);
-    tess[13] = createVector4(s, -s, -s, -s);
-    tess[14] = createVector4(s, s, -s, -s);
-    tess[15] = createVector4(-s, s, -s, -s);
-
+    let tess = product([-size, size], [-size, size], [-size, size], [-size, size]);
+    tess = tess.map(x => createVector4(...x));
     return tess;
+}
+
+function countDifferences(va, vb)
+{
+    c = 0;
+    for(let i = 0; i < 4; i++)
+    {
+        if (va[i][0] != vb[i][0]) {c++}
+    }
+    return c;
+}
+
+function checkExisting(con, i, j)
+{
+    res = false;
+    for(let c of con)
+    {
+        if(c[0] == i && c[1] == j) {res = true;}
+    }
+    return res;
+}
+
+function getConnexions(tess)
+{
+    con = [];
+    for(let i = 0; i < tess.length; i++)
+    {
+        for(let j = 0; j < tess.length; j++)
+        {
+            if(countDifferences(tess[i], tess[j]) == 1 && !checkExisting(con, j, i))
+            {
+                con.push([i, j]);
+            }
+        }
+    }
+    return con;
 }
 
 function createRotation4(a, b)
@@ -81,12 +102,12 @@ function matmul(a, b)
     return c;
 }
 
-function projectTesseract(tess)
+function projectTesseract(tess, d)
 {
     let proj = new Array(tess.length);
     for(let i = 0; i < tess.length; i++)
     {
-        stereographic = 250 / (250 - tess[i][3][0]);
+        stereographic = d / (d - tess[i][3][0]);
         proj[i] = createVector(tess[i][0][0], tess[i][1][0], tess[i][2][0]);
         proj[i].mult(stereographic);
     }
@@ -94,41 +115,19 @@ function projectTesseract(tess)
     return proj;
 }
 
-function connect(a, b)
+function connect(proj, i, j)
 {
+    a = proj[i];
+    b = proj[j];
     line(a.x, a.y, a.z, b.x, b.y, b.z);
 }
 
-function drawProj(proj)
+function drawProj(con, proj)
 {
-    for(let i = 0; i < 4; i++)
+    for(let c of con)
     {
-        connect(proj[i], proj[(i+1) % 4]);
-    }
-    for(let i = 4; i < 8; i++)
-    {
-        connect(proj[i], proj[(i+1) % 4 + 4]);
-    }
-    for(let i = 0; i < 4; i++)
-    {
-        connect(proj[i], proj[i + 4]);
-    }
-
-    for(let i = 8; i < 12; i++)
-    {
-        connect(proj[i], proj[(i+1) % 4 + 8]);
-    }
-    for(let i = 12; i < 16; i++)
-    {
-        connect(proj[i], proj[(i+1) % 4 + 12]);
-    }
-    for(let i = 8; i < 12; i++)
-    {
-        connect(proj[i], proj[i + 4]);
-    }
-
-    for(let i = 0; i < 8; i++)
-    {
-        connect(proj[i], proj[i + 8]);
+        connect(proj, ...c);
     }
 }
+
+
