@@ -1,0 +1,53 @@
+# Site settings
+title: "Science Decoder"
+author: "Thomas Saint-Gérand"
+email: devspaceship@gmail.com
+description: "A website to understand math, physics, computer science and artificial intelligence through examples"
+baseurl: ""
+url: ""
+title_description: "Hello, my name is Thomas Saint-Gérand and this is my website to understand math, physics, computer science and artificial intelligence or basically any subjects that interests me through detailed examples."
+title_image: "img/profile_pic.png"
+google_analytics: "UA-143621148-1"
+disqus_account: science-decoder
+github_repository: https://github.com/devspaceship/devspaceship.github.io
+addthis_id: ra-5d2537fd4d3d4305
+post_limit: 5
+
+# Social usernames/URLs
+twitter_username: adamspaceship
+github_username:  devspaceship
+instagram_username: devspaceship
+reddit_username: 
+linkedin_link: https://www.linkedin.com/in/devspaceship/
+google_plus_link: 
+stackoverflow_link: 
+xing_link:
+facebook_link: https://www.facebook.com/devspaceship
+
+# Footer
+footer_left: "Jekyll theme made with <i class=\"fa fa-heart\"></i> by <a href=\"https://twitter.com/_JacobTomlinson\">Jacob Tomlinson</a>"
+footer_right: "&lt;/&gt; on <a href=\"https://github.com/jacobtomlinson/carte-noire\">Github</a> &nbsp;<i class=\"fa fa-github-alt\"></i>"
+
+# Build settings
+markdown: kramdown
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+permalink: pretty
+exclude: [vendor]
+
+#Defaults
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      author: "Thomas Saint-Gérand"
+      thumbnail: graduation-cap
+      permalink: :categories/:title.html
+      comments: true
+      p5: false
+      p5_audio: false

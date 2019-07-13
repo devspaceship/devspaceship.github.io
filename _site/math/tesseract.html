@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tesseract Animation Tutorial</title>
+<meta name="author" content="Thomas Saint-Gérand">
+<meta name="description" content="A website to understand math, physics, computer science and artificial intelligence through examples">
+
+<link rel="stylesheet" type="text/css" media="all" href="/css/skeleton/skeleton.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/css/skeleton/normalize.css" />
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/css/jquery.mmenu.all.css" />
+<link rel="stylesheet" href="/css/highlightjs.piperita.css">
+<link rel="stylesheet" type="text/css" media="all" href="/css/custom.css" />
+
+<!-- Favicons generated at http://realfavicongenerator.net/ -->
+<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+<link rel="manifest" href="/favicons/site.webmanifest">
+<link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="/favicons/favicon.ico">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-config" content="/favicons/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+
+
+
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5d2537fd4d3d4305"></script>
+
+
+
+<!-- MathJax for LaTeX -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      CommonHTML: { linebreaks: { automatic: true } },
+      "HTML-CSS": { linebreaks: { automatic: true } },
+             SVG: { linebreaks: { automatic: true } }
+    });
+</script>
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+
+
+
+
+</head>
+
+
+    <body>
+
+    <nav id="my-menu">
+  <div>
+    <p>Science Decoder</p>
+
+    <ul class="pages">
+      <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+      <li><a href="/articles/"><i class="fa fa-archive"></i> All Articles</a></li>
+      <li><a href="/search/"><i class="fa fa-search"></i> Search</a></li>
+    </ul>
+
+    <p class="links">
+  <a href="https://www.twitter.com/adamspaceship" target="_new"><i class="fa fa-twitter"></i></a>
+  <a href="https://www.linkedin.com/in/devspaceship/" target="_new"><i class="fa fa-linkedin"></i></a>
+  
+  
+  <a href="https://www.facebook.com/devspaceship" target="_new"><i class="fa fa-facebook"></i></a>
+  <a href="https://github.com/devspaceship" target="_new"><i class="fa fa-github-alt"></i></a>
+  
+  <a href="https://www.instagram.com/devspaceship" target="_new"><i class="fa fa-instagram"></i></a>
+  
+  <a href="/feed.xml" target="_new"><i class="fa fa-rss"></i></a>
+</p>
+
+  </div>
+</nav>
+<div class="menu-button" href="#menu"><i class="fa fa-bars"></i></div>
+
+
+    <div class="page-content">
+      <div class="wrap">
+      
+
+<div class="container-fluid single">
+  <div class="row">
+
+    <div itemscope itemtype="http://schema.org/Article" class="col-md-12 article">
+      
+      <div class="thumb">
+        <i class="fa fa-graduation-cap fa-4x"></i>
+      </div>
+      
+
+      <h1 class="header" itemprop="name">Tesseract Animation Tutorial</h1>
+
+      <div class="author">
+        <small><i>
+          
+          by
+          <span itemprop="author">
+            
+            <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+              <span itemprop="name">Thomas Saint-Gérand</span>
+            </span>
+            
+          </span>
+          
+          on <span itemprop="datePublished" content="2014-08-28">January 29, 2019</span>
+           under Math
+        </i></small>
+      </div>
+
+      <div class="read-time">
+        <small>
+          4 minutes of reading
+        </small>
+      </div>
+
+      <div class="content-panel content">
+
+        
+
+        <span itemprop="articleBody"><div style="width: 100%;">
+<div id="canvas-holder" style="margin: 0 auto; overflow: auto; max-width: 600px;"></div>
+
+<div class="row" style="margin: 0 auto;">
+    <div class="four columns">
+        <label for="slider_d">d</label>
+        <input type="range" min="175" max="1000" value="200" id="slider_d" />
+    </div>
+    <div class="four columns">
+        <label for="slider_xy">\(\alpha\)</label>
+        <input type="range" min="1" max="15" value="8" id="slider_xy" />
+    </div>
+    <div class="four columns">
+        <label for="slider_zw">\(\beta\)</label>
+        <input type="range" min="1" max="15" value="4" id="slider_zw" />
+    </div>
+</div>
+</div>
+
+<script src="/scripts/tesseract/matrix.js"></script>
+
+<script src="/scripts/tesseract/tesseract.js"></script>
+
+<h2 id="what-exactly-is-a-tesseract-">What exactly is a tesseract ?</h2>
+
+<p>A tesseract is just a four-dimensional cube.
+We can also generalize the cube in <script type="math/tex">n</script> dimensions, 
+in which case it is simply called a <script type="math/tex">n</script>-hypercube.
+But how exactly do we generalize this idea of a cube ?
+Let’s start with dimension <script type="math/tex">0</script>, a point.
+To transition to dimension <script type="math/tex">1</script>, you transform the point into a continuum of points to get a line.
+To go to dimension <script type="math/tex">2</script>, we transform this line into a continuum of lines to get a square.
+And to get the cube, we repeat the operation with a continuum of planes.
+You may have noticed, that here, we were always extruding the next shape from the previous one in an orthogonal manner.
+So how are we supposed to extrude the cube into a tesseract ?
+Well, we simply need another dimension which is orthogonal to the three firsts, a fourth one.
+However, we live in a 3D world, so we can’t really visualize what it is supposed to look like,
+but what we can do is project it in our 3D world in a way that show its important features and connections.
+For our projection using the p5.js library, we are going to define the tesseract of size <script type="math/tex">2s</script> by its points:</p>
+
+<p><script type="math/tex">line = \{-s, s\}\\
+square = \{(-s, -s), (-s, s), (s, -s), (s, s)\} = \{-s, s\} \times \{-s, s\} = \{-s, s\}^2\\
+cube = \{-s, s\} \times \{-s, s\} \times \{-s, s\} = \{-s, s\}^3\\
+tesseract = \{-s, s\}^4</script>
+Here, <script type="math/tex">\times</script> represents the cartesian product.</p>
+
+<p><a href="https://eddmann.com/posts/cartesian-product-in-javascript/">Edd Mann</a> created a very neat code snippet for doing cartesian products in JavaScript, so we are going to use it.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">flatten</span> <span class="o">=</span> <span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">[].</span><span class="nx">concat</span><span class="p">.</span><span class="nx">apply</span><span class="p">([],</span> <span class="nx">arr</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">product</span> <span class="o">=</span> <span class="p">(...</span><span class="nx">sets</span><span class="p">)</span> <span class="o">=&gt;</span>
+  <span class="nx">sets</span><span class="p">.</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">acc</span><span class="p">,</span> <span class="kd">set</span><span class="p">)</span> <span class="o">=&gt;</span>
+    <span class="nx">flatten</span><span class="p">(</span><span class="nx">acc</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="kd">set</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">y</span> <span class="o">=&gt;</span> <span class="p">[</span> <span class="p">...</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="p">]))),[[]]);</span>
+</code></pre></div></div>
+
+<p>Once we have our points, we need to determine which points we connect.
+To do this, we only have to check the number of dimensions where 2 points differ,
+if it is 1 then, it means the 2 points are connected.</p>
+
+<h2 id="projecting-the-tesseract">Projecting the tesseract</h2>
+
+<p>We are going to use the following projection:</p>
+
+<script type="math/tex; mode=display">\pi : \mathbb{R}^4 \rightarrow \mathbb{R}^3\\
+(x, y, z, w) \rightarrow \frac{(x, y, z)}{\lambda(w)}\\
+\lambda(w) = \frac{d}{d - w} \text{ with } d > \max(w)</script>
+
+<p>This is actually a <a href="https://en.wikipedia.org/wiki/Stereographic_projection">stereographic projection</a>
+onto the canonical 3D space. Basically it just scales a point given its 4th coordonate.
+If a point is in the space w = 0, it stays the same.
+If w &lt; 0, it is going to scale down.
+And if w &gt; 0, it is gonna scale up and approach an infinite scaling as w approach d.
+Here, d is a parameter of our projection, you can try changing it with the slider under the canvas.</p>
+
+<h2 id="rotating-the-tesseract">Rotating the tesseract</h2>
+
+<p>Okay, now we have a tesseract and a way to project it into our 3D space.
+But it is not moving yet, for this we need to rotate it and not in our 3D space,
+otherwise we would just have a static projection rotating on itself. <br />
+A rotation matrix in <script type="math/tex">n</script>-dimension is a matrix which inversed is its transposed self and have a determinant of 1.
+This group is called the special orthogonal group of rank n : <script type="math/tex">SO(n) = \{M : M^TM = MM^T = I \text{ and } |M| = 1\}</script>.
+Here is the matrix we are going to use:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+R(\alpha, \beta, t) = 
+\begin{pmatrix} 
+R_{\alpha t} & 0_2 \\
+0_2 & R_{\beta t} 
+\end{pmatrix} %]]></script>
+
+<p>Using the already known results for 2D rotations we can verify that <script type="math/tex">R \in SO(4)</script> given 
+that <script type="math/tex">R_{\alpha t} \in SO(2)</script> and <script type="math/tex">R_{\beta t} \in SO(2)</script>:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+R^T =
+\begin{pmatrix} 
+R_{\alpha t}^T & 0_2 \\
+0_2 & R_{\beta t}^T 
+\end{pmatrix} = 
+\begin{pmatrix} 
+R_{-\alpha t} & 0_2 \\
+0_2 & R_{-\beta t} 
+\end{pmatrix}\\
+\text{So, } RR^T = R^TR =
+\begin{pmatrix} 
+R_{0} & 0_2 \\
+0_2 & R_{0} 
+\end{pmatrix} =
+\begin{pmatrix} 
+I_2 & 0_2 \\
+0_2 & I_2
+\end{pmatrix} %]]></script>
+
+<p>Also, <script type="math/tex">|R| = |R_{\alpha t}||R_{\beta t}| = 1</script> <br /> <script type="math/tex">\alpha</script> and <script type="math/tex">\beta</script> represent, 
+respectively, the rotation speeds for the XY plane and the ZW plane.
+You can also change those parameters’ values with the sliders.</p>
+
+<h2 id="final-notes">Final notes</h2>
+
+<p>You can find the (not so long) full code <a href="https://github.com/devspaceship/devspaceship.github.io/tree/master/scripts/tesseract">here</a>.</p>
+
+</span>
+
+        
+
+        
+        <div class="share">
+          <!-- Go to www.addthis.com/dashboard to customize your tools -->
+          <div class="addthis_sharing_toolbox"></div>
+        </div>
+        
+
+        
+        <div class="tags">
+          <small>
+          <i class="fa fa-tags"></i>
+            Tesseract, Animation
+          </small>
+        </div>
+        
+
+      </div>
+
+      
+      <div class="content-panel feedback">
+        I <i class="fa fa-heart"></i> feedback.<br />
+        Let me know what you think of this article on twitter <a href="http://www.twitter.com/adamspaceship">@adamspaceship</a> or leave a comment below!
+      </div>
+      
+
+      
+      <div class="content-panel comments">
+        <div id="disqus_thread">
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      </div>
+      
+
+      
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+function disqus_config() { this.experiment.enable_scroll_container = true; }
+var disqus_shortname = "science-decoder";
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+
+      </div>
+    </div>
+
+    <div class="footer clearfix">
+  <div class="col-md-6">
+    Jekyll theme made with <i class="fa fa-heart"></i> by <a href="https://twitter.com/_JacobTomlinson">Jacob Tomlinson</a>
+  </div>
+  <div class="col-md-6">
+    &lt;/&gt; on <a href="https://github.com/jacobtomlinson/carte-noire">Github</a> &nbsp;<i class="fa fa-github-alt"></i>
+  </div>
+</div>
+
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="/js/jquery.mmenu.min.all.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+   $(document).ready(function() {
+      $("#my-menu").mmenu().on( "closed.mm", function() {
+            $(".menu-button").show();
+         });
+      $(".menu-button").click(function() {
+        $(".menu-button").hide();
+        $("#my-menu").trigger("open.mm");
+      });
+   });
+</script>
+
+
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-143621148-1']);
+          _gaq.push(['_trackPageview']);
+  (function () {
+      var ga = document.createElement('script');
+      ga.type = 'text/javascript';
+      ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+    </body>
+</html>

@@ -1,2 +1,2 @@
-# Understanding AI
-Go to [my website](https://devspaceship.github.io)!
+# Science Decoder
+Visit my personal [website](https://devspaceship.github.io) about science !
