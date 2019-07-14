@@ -1,82 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Understanding AI</title>
-  <meta name="description" content="Personal website">
-  <meta name="author" content="Thomas Saint-Gérand">
+---
+layout: default
+make-smaller-titles: true
+---
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-
-  <link rel="stylesheet" href="/css/normalize.css">
-  <link rel="stylesheet" href="/css/skeleton.css">
-  <link rel="stylesheet" href="/css/custom.css">
-
-  <link rel="icon" type="image/png" href="/images/favicon.png">
-</head>
-
-<body>
-  <div class="container">
-    <!--Navbar-->
-    <div style="margin-top: 5%">
-      <a class="button button-primary" href="/">Home</a>
-      <a class="button button-primary" href="/projects.html">My Projects</a>
-    </div>
-
-    <!-- Content -->
-    <div style="margin-top: 3%" class="row">
-      <div class="two columns offset-by-four">
-          <img class="u-full-width" src="/images/student-hat.png" alt="Student Hat">
-      </div>
-    </div>
-    <h1 style="margin-top: 2%"><strong>U</strong>nderstanding <strong>A</strong>rtificial <strong>I</strong>ntelligence</h1>
-    
-    <!--Content here-->
+<div class="container-fluid index">
     <div class="row">
-      <div class="three columns">
-        <img src="/images/profile_pic.png" alt="Profile picture" class="u-full-width">
-      </div>
-      <div class="nine columns">
-        <h2>Who Am I ?</h2>
-        <p>
-          I was born in France, near Paris and have always been interested in science.
-          More specifically, math, physics, astronomy, cosmology, computer science, engineering science, etc.
-          After highschool, I studied 3 years in <em>Higher School Preparatory Classes</em> of Math and Physics
-          before switching to the last year of a <em>Bachelor in Mathematics</em>
-          thanks to my equivalence ECTS and getting it in order to be studying where I am studying now,
-          which is in a <em>Master in Artificial Intelligence</em> at the Universiteit van Amsterdam(<em>UvA</em>) in The Netherlands.
-        </p>
-        <h2>What is this website about ?</h2>
-        <p>
-          This website is under construction and will feature my articles and projects.
-          They will be mainly about AI, hence the name,
-          but some of them will also be about other things I want to write about.
-        </p>
-      </div>
-    </div>
 
-    <!-- Licenses -->
-    <div style="margin-top: 10%" class="row">
-      <div class="three columns">
-          <a href="https://github.com/devspaceship"><img src="/images/social/github.png" alt="Github" height="48px"></a>
-      </div>
-      <div class="three columns">
-          <a href="https://www.linkedin.com/in/devspaceship/"><img src="/images/social/linkedin.png" alt="LinkedIn" height="48px"></a>
-      </div>
-      <div class="three columns">
-          <a href="https://www.instagram.com/devspaceship/"><img src="/images/social/instagram.png" alt="Instagram" height="48px"></a>
-      </div>
-      <div class="three columns">
-          <a href="https://www.facebook.com/devspaceship"><img src="/images/social/facebook.png" alt="Facebook" height="48px"></a>
-      </div>
+        <div class="col-md-12 main content-panel">
+
+            <div class="gravatar">
+                <img src="{{ site.title_image }}" class="img-circle about-image" height="150" width="150" alt="{{ site.title }}" />
+            </div>
+
+            <h1 class="header author-header" itemprop="headline">{{ site.title }}</h1>
+
+            <div class="author-text">
+                {{ site.title_description }}
+            </div>
+
+            {% include social_links.html %}
+          </div>
+          <div class="col-md-12 main content-panel">
+
+            <div class="articles">
+
+              <h2>Latest Articles</h2>
+
+              <ul>
+                  {% for post in site.posts limit: site.post_limit %}
+
+                      <li>
+                          <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+                          <small class="hidden-xs">{{ post.date | date: "%B %-d, %Y" }}</small>
+                      </li>
+
+                  {% endfor %}
+                  <li>
+                      <small><i><a href="{{ site.baseurl }}/articles/">more...</a></i></small>
+                  </li>
+              </ul>
+
+            </div>
+
+        </div>
+
     </div>
-    <div style="margin-top: 2%">
-        Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> 
-        from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> 
-        are licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
-    </div>
-  </div>
-</body>
-</html>
+</div>

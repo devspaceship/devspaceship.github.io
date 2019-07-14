@@ -1,0 +1,85 @@
+<div id="canvas-holder" style="text-align: center; overflow:auto;"></div>
+
+<label for="block-type">Block Type: </label>
+<select id="block-type" style="margin-top: 20px;">
+  <option value="trap">Trap</option>
+  <option value="start">Starting Point</option>
+  <option value="end">End Point</option>
+  <option value="air">Air</option>
+</select>
+
+<label for="solver-type">Solver: </label>
+<select id="solver-type">
+  <option value="policy_iter">Policy Iteration</option>
+  <option value="value_iter">Value Iteration</option>
+  <option value="sarsa">SARSA</option>
+  <option value="q_learning">Q-Learning</option>
+</select>
+
+<button class='button-primary' id="solve_button">Solve</button>
+
+<div id="policy_iter_options" class="row" style="margin: 0;">
+  <div class="four columns">
+      <label for="policy_iter_treshold">Treshold</label>
+      <input type="range" min="-8" max="-2" value="-5" id="policy_iter_treshold">
+      <div id="policy_iter_treshold_value"></div>
+  </div>
+  <div class="four columns">
+      <label for="policy_iter_gamma">Gamma</label>
+      <input type="range" min="0" max="99" value="97" id="policy_iter_gamma">
+      <div id="policy_iter_gamma_value"></div>
+  </div>
+</div>
+
+<div id="value_iter_options" class="row" style="margin: 0;">
+  <div class="four columns">
+      <label for="value_iter_treshold">Treshold</label>
+      <input type="range" min="-8" max="-2" value="-5" id="value_iter_treshold">
+      <div id="value_iter_treshold_value"></div>
+  </div>
+  <div class="four columns">
+      <label for="value_iter_gamma">Gamma</label>
+      <input type="range" min="0" max="99" value="97" id="value_iter_gamma">
+      <div id="value_iter_gamma_value"></div>
+  </div>
+  <div class="four columns">
+    <label for="value_iter_k">Evaluations between improvements</label>
+    <input type="range" min="1" max="20" value="7" id="value_iter_k">
+    <div id="value_iter_k_value"></div>
+  </div>
+</div>
+
+<div id="SARSA_Q_options">
+  <div class="row" style="margin: 0;">
+    <div class="four columns">
+        <label for="SARSA_Q_N">Number of iterations</label>
+        <input type="range" min="4000" max="10000" value="10000" id="SARSA_Q_N">
+        <div id="SARSA_Q_N_value"></div>
+    </div>
+    <div class="four columns">
+        <label for="SARSA_Q_gamma">Gamma</label>
+        <input type="range" min="0" max="99" value="97" id="SARSA_Q_gamma">
+        <div id="SARSA_Q_gamma_value"></div>
+    </div>
+    <div class="four columns">
+      <label for="SARSA_Q_alpha">Learning Rate</label>
+      <input type="range" min="1" max="15" value="3" id="SARSA_Q_alpha">
+      <div id="SARSA_Q_alpha_value"></div>
+    </div>
+  </div>
+  <div class="row" style="margin: 0;">
+    <div class="four columns">
+        <label for="SARSA_Q_eps_0">Epsilon 0</label>
+        <input type="range" min="0" max="100" value="100" id="SARSA_Q_eps_0">
+        <div id="SARSA_Q_eps_0_value"></div>
+    </div>
+    <div class="four columns">
+        <label for="SARSA_Q_T">Exploration Period</label>
+        <input type="range" min="1" max="1000" value="350" id="SARSA_Q_T">
+        <div id="SARSA_Q_T_value"></div>
+    </div>
+  </div>
+</div>
+
+<script src="/scripts/gridworld/grid.js"></script>
+<script src="/scripts/gridworld/gridworld.js"></script>

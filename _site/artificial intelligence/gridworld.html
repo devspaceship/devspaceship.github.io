@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Gridworld</title>
+<meta name="author" content="Thomas Saint-Gérand">
+<meta name="description" content="A website to understand math, physics, computer science and artificial intelligence through examples">
+
+<link rel="stylesheet" type="text/css" media="all" href="/css/skeleton/skeleton.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/css/skeleton/normalize.css" />
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/css/jquery.mmenu.all.css" />
+<link rel="stylesheet" href="/css/highlightjs.piperita.css">
+<link rel="stylesheet" type="text/css" media="all" href="/css/custom.css" />
+
+<!-- Favicons generated at http://realfavicongenerator.net/ -->
+<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+<link rel="manifest" href="/favicons/site.webmanifest">
+<link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="/favicons/favicon.ico">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-config" content="/favicons/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+
+
+
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5d2537fd4d3d4305"></script>
+
+
+
+<!-- MathJax for LaTeX -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      CommonHTML: { linebreaks: { automatic: true } },
+      "HTML-CSS": { linebreaks: { automatic: true } },
+             SVG: { linebreaks: { automatic: true } }
+    });
+</script>
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+
+
+
+
+</head>
+
+
+    <body>
+
+    <nav id="my-menu">
+  <div>
+    <p>Science Decoder</p>
+
+    <ul class="pages">
+      <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+      <li><a href="/articles/"><i class="fa fa-archive"></i> All Articles</a></li>
+      <li><a href="/search/"><i class="fa fa-search"></i> Search</a></li>
+    </ul>
+
+    <p class="links">
+  <a href="https://www.twitter.com/adamspaceship" target="_new"><i class="fa fa-twitter"></i></a>
+  <a href="https://www.linkedin.com/in/devspaceship/" target="_new"><i class="fa fa-linkedin"></i></a>
+  
+  
+  <a href="https://www.facebook.com/devspaceship" target="_new"><i class="fa fa-facebook"></i></a>
+  <a href="https://github.com/devspaceship" target="_new"><i class="fa fa-github-alt"></i></a>
+  
+  <a href="https://www.instagram.com/devspaceship" target="_new"><i class="fa fa-instagram"></i></a>
+  
+  <a href="/feed.xml" target="_new"><i class="fa fa-rss"></i></a>
+</p>
+
+  </div>
+</nav>
+<div class="menu-button" href="#menu"><i class="fa fa-bars"></i></div>
+
+
+    <div class="page-content">
+      <div class="wrap">
+      
+
+<div class="container-fluid single">
+  <div class="row">
+
+    <div itemscope itemtype="http://schema.org/Article" class="col-md-12 article">
+      
+      <div class="thumb">
+        <i class="fa fa-graduation-cap fa-4x"></i>
+      </div>
+      
+
+      <h1 class="header" itemprop="name">Interactive Gridworld</h1>
+
+      <div class="author">
+        <small><i>
+          
+          by
+          <span itemprop="author">
+            
+            <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+              <span itemprop="name">Thomas Saint-Gérand</span>
+            </span>
+            
+          </span>
+          
+          on <span itemprop="datePublished" content="2014-08-28">January 15, 2019</span>
+           under Artificial Intelligence
+        </i></small>
+      </div>
+
+      <div class="read-time">
+        <small>
+          20 minutes of reading
+        </small>
+      </div>
+
+      <div class="content-panel content">
+
+        
+
+        <span itemprop="articleBody"><div id="canvas-holder" style="text-align: center; overflow:auto;"></div>
+
+<p><label for="block-type">Block Type: </label>
+<select id="block-type" style="margin-top: 20px;">
+  <option value="trap">Trap</option>
+  <option value="start">Starting Point</option>
+  <option value="end">End Point</option>
+  <option value="air">Air</option>
+</select></p>
+
+<p><label for="solver-type">Solver: </label>
+<select id="solver-type">
+  <option value="policy_iter">Policy Iteration</option>
+  <option value="value_iter">Value Iteration</option>
+  <option value="sarsa">SARSA</option>
+  <option value="q_learning">Q-Learning</option>
+</select></p>
+
+<p><button class="button-primary" id="solve_button">Solve</button></p>
+
+<div id="policy_iter_options" class="row" style="margin: 0;">
+  <div class="four columns">
+      <label for="policy_iter_treshold">Treshold</label>
+      <input type="range" min="-8" max="-2" value="-5" id="policy_iter_treshold" />
+      <div id="policy_iter_treshold_value"></div>
+  </div>
+  <div class="four columns">
+      <label for="policy_iter_gamma">Gamma</label>
+      <input type="range" min="0" max="99" value="97" id="policy_iter_gamma" />
+      <div id="policy_iter_gamma_value"></div>
+  </div>
+</div>
+
+<div id="value_iter_options" class="row" style="margin: 0;">
+  <div class="four columns">
+      <label for="value_iter_treshold">Treshold</label>
+      <input type="range" min="-8" max="-2" value="-5" id="value_iter_treshold" />
+      <div id="value_iter_treshold_value"></div>
+  </div>
+  <div class="four columns">
+      <label for="value_iter_gamma">Gamma</label>
+      <input type="range" min="0" max="99" value="97" id="value_iter_gamma" />
+      <div id="value_iter_gamma_value"></div>
+  </div>
+  <div class="four columns">
+    <label for="value_iter_k">Evaluations between improvements</label>
+    <input type="range" min="1" max="20" value="7" id="value_iter_k" />
+    <div id="value_iter_k_value"></div>
+  </div>
+</div>
+
+<div id="SARSA_Q_options">
+  <div class="row" style="margin: 0;">
+    <div class="four columns">
+        <label for="SARSA_Q_N">Number of iterations</label>
+        <input type="range" min="4000" max="10000" value="10000" id="SARSA_Q_N" />
+        <div id="SARSA_Q_N_value"></div>
+    </div>
+    <div class="four columns">
+        <label for="SARSA_Q_gamma">Gamma</label>
+        <input type="range" min="0" max="99" value="97" id="SARSA_Q_gamma" />
+        <div id="SARSA_Q_gamma_value"></div>
+    </div>
+    <div class="four columns">
+      <label for="SARSA_Q_alpha">Learning Rate</label>
+      <input type="range" min="1" max="15" value="3" id="SARSA_Q_alpha" />
+      <div id="SARSA_Q_alpha_value"></div>
+    </div>
+  </div>
+  <div class="row" style="margin: 0;">
+    <div class="four columns">
+        <label for="SARSA_Q_eps_0">Epsilon 0</label>
+        <input type="range" min="0" max="100" value="100" id="SARSA_Q_eps_0" />
+        <div id="SARSA_Q_eps_0_value"></div>
+    </div>
+    <div class="four columns">
+        <label for="SARSA_Q_T">Exploration Period</label>
+        <input type="range" min="1" max="1000" value="350" id="SARSA_Q_T" />
+        <div id="SARSA_Q_T_value"></div>
+    </div>
+  </div>
+</div>
+
+<script src="/scripts/gridworld/grid.js"></script>
+
+<script src="/scripts/gridworld/gridworld.js"></script>
+
+<h2 id="what-is-a-gridworld-">What is a gridworld ?</h2>
+
+<p>Even though the name seems self-explanatory, I am still going to give some precisions.
+This gridworld is 8 lines x 12 columns.
+It represent an <em>environment</em> in which our <em>agent</em> is going to take <em>actions</em>.
+The orange cell on the up left corner is the starting point of our <em>agent</em>.
+The green one placed on the bottom right is the goal <em>state</em>, where we want to go.
+You can drag your mouse on the grid to place traps which are going to be represented by red cells.
+You can erase by placing air again and you can also change the position of the starting and the ending point.</p>
+
+<p>We start at the first time step on the starting point <script type="math/tex">s_0</script>.
+At each time step, we chose a possible action <script type="math/tex">a_t</script>.
+Here we can go down or right but not up or left because there is a wall.
+Let’s say that we chosed to go down <script type="math/tex">a_0 = down</script>.
+If there is a trap, we get a ‘reward’ of <script type="math/tex">-100</script> and the game ends <script type="math/tex">r_0 = -100</script>.
+If there is nothing, we get a reward of <script type="math/tex">-1</script>, <script type="math/tex">r_0 = -1</script>, and if we got to the end, we get a reward of <script type="math/tex">+100</script> and the game ends <script type="math/tex">r_0 = 100</script>.
+Note that we can define a terminal <em>state</em> as a <em>state</em> where every action takes you to the same <em>state</em> with a reward of <script type="math/tex">0</script>.
+The goal is to finish the game with the maximum (discounted) reward possible <script type="math/tex">R = \sum_{t=0}^{+\infty} \gamma^t r_t</script>.
+That is why we give a negative reward when transitionning to a cell where there is nothing.
+This tells us that the shortest path to the end is going to be better than making 3 times the tour of the map before going to the goal <em>state</em>.</p>
+
+<p>The theory lying underground that will help us understand the way we design solving algorithms is <strong>Reinforcement Learning</strong>.<br />
+It is based on a mathematical model that capture the essence of problem like this one called <a href="https://en.wikipedia.org/wiki/Markov_decision_process"><strong>Markov Decision Process</strong></a>.<br />
+In a deterministic <strong>MDP</strong>, you have:</p>
+<ul>
+  <li>a set of <em>states</em> <script type="math/tex">S</script>, where <script type="math/tex">S_t</script> is the subset of <em>states</em> you can access at time step <script type="math/tex">t</script>.</li>
+  <li>a set of <em>actions</em> <script type="math/tex">A</script>, where <script type="math/tex">A_t</script> is the subset of <em>actions</em> you can chose at time step <script type="math/tex">t</script>.</li>
+  <li>a <em>reward</em> function <script type="math/tex">R</script>, where <script type="math/tex">R(s, s')</script> is the <em>reward</em> you get when transitionning from <em>state</em> <script type="math/tex">s</script> to <script type="math/tex">s'</script>.
+<img src="/../img/gridworld/mdp.png" alt="Finite Deterministic Markov Decision Process" /></li>
+</ul>
+
+<h2 id="what-is-a-policy-a-state-value-and-a-q-function-">What is a policy, a state value and a Q-function ?</h2>
+
+<p>We first define the concept of <em>policy</em>.
+The policy is a function <script type="math/tex">\pi : S \rightarrow A</script>. In other words,
+it takes a <em>state</em> as an input and output an <em>action</em> to take.
+An agent is said to follow a policy <script type="math/tex">\pi</script> if <script type="math/tex">\forall t \in \mathbb{N}, a_t = \pi(s_t)</script> i.e. if it takes the action that the policy asks it to follow.<br />
+We can now define what are a state-value and a Q-value (also called action-value) function given a policy:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+  V^{\pi}(s_t) &= \mathbb{E}_{\pi} \left[\sum_{i = t}^{+ \infty} \gamma^{i-t} r_i \mid s_t \right] \\
+  Q^{\pi}(s_t, a_t) &= \mathbb{E}_{\pi} \left[\sum_{i = t}^{+ \infty} \gamma^{i-t} r_i \mid s_t, a_t \right]
+\end{align} %]]></script>
+
+<p>We already used <script type="math/tex">% <![CDATA[
+0 < \gamma \leq 1 %]]></script> three times without explaining what it was, it is called the <em>discount rate</em>.
+It will set at what extent our agent is going to be concerned by long-time reward.
+If <script type="math/tex">\gamma</script> is near <script type="math/tex">0</script>, we are going to take into account only reward in the near future.
+If, however, <script type="math/tex">\gamma</script> is near <script type="math/tex">1</script>, we will considerate more long-lasting reward.<br />
+Ok now, what about <script type="math/tex">V^{\pi}</script> and <script type="math/tex">Q^{\pi}</script> ?<br />
+<script type="math/tex">V^{\pi}(s_t)</script> represents the future discounted reward, starting at <script type="math/tex">s_t</script> and following the policy <script type="math/tex">\pi</script>.<br />
+<script type="math/tex">Q^{\pi}(s_t, a_t)</script> is very similar, it is the future discounted reward, still starting at <script type="math/tex">s_t</script>
+but this time taking action <script type="math/tex">a_t</script> (possilbly different from <script type="math/tex">\pi(s_t)</script>) before following the policy.</p>
+
+<p>A policy which is going to maximize the future dicounted reward is called an optimal policy.
+There can be several ones sometimes (for instance if transitioning to nothing would yield a reward of 0 and if the discounting factor was 1). <br />
+Let’s take one, we are going to call it <script type="math/tex">\pi^*</script>, we also define the optimal
+state-value function <script type="math/tex">V^* = V^{\pi^*} = \max_{\pi} V^{\pi}</script>
+as well as the optimal Q-value function <script type="math/tex">Q^* = Q^{\pi^*} = \max_{\pi} Q^{\pi}</script>. Note that all optimal policies share the same state-value and action-value (Q-value) function because if one was higher than the others, the other ones wouldn’t be optimal.</p>
+
+<h2 id="lets-solve-it-">Let’s solve it !</h2>
+
+<p>The next remarks are going to be central for solving the problem,
+they are the <a href="https://en.wikipedia.org/wiki/Bellman_equation">Bellman Equations</a> of a deterministic <em>MDP</em> (with deterministic policy).</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+  V^{\pi}(s_t) &= \sum_{i = t}^{+ \infty} \gamma^{i-t} r_i\\
+  &= r_t + \sum_{i = t+1}^{+ \infty} \gamma^{i-t} r_i\\
+  &= r_t + \gamma \sum_{i = t+1}^{+ \infty} \gamma^{i-(t+1)} r_i\\
+  &= R(s_t, \pi(s_t)) + \gamma V^{\pi}(s_{t+1})
+\end{align} %]]></script>
+
+<p>By the same reasoning we obtain the equation for the action-value function:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+  Q^{\pi}(s_t, a_t) &= \sum_{i = t}^{+ \infty} \gamma^{i-t} r_i \mid a_t\\
+  &= r_t + \gamma \sum_{i = t+1}^{+ \infty} \gamma^{i-(t+1)} r_i\\
+  &= R(s_t, s(s_t, a_t)) + \gamma V^{\pi}(s(s_t, a_t))
+\end{align} %]]></script>
+
+<p>For the optimal state-value and action-value functions, we have:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+  V^*(s_t) &= R(s_t, \pi^*(s_t)) + \gamma V^*(s_{t+1})\\
+  Q^*(s_t, a_t) &= R(s_t, s(s_t, a_t)) + \gamma V^*(s(s_t, a_t))
+\end{align} %]]></script>
+
+<p>We can also remark that <script type="math/tex">V^*(s) = \max_a Q^*(s, a)</script> and inject it in the last equation:</p>
+
+<script type="math/tex; mode=display">Q^*(s_t, a_t) = R(s_t, s(s_t, a_t)) + \gamma \max_{a_{t+1}} Q^*(s(s_t, a_t), a_{t+1})</script>
+
+<h2 id="policy-iteration">Policy Iteration</h2>
+
+<p>The first method we are going to use is called Policy Iteration.
+We initialize the state-value function with a random one or we can also initialize it at 0 for every state.
+We, then, derive a better policy from this state-value.
+We calculate the new state-value and again a new better policy,
+and so on until the policy is stable.</p>
+
+<h3 id="policy-evaluation">Policy Evaluation</h3>
+
+<p>We first need a method in order to estimate the state-value function of a policy.
+We could solve the <script type="math/tex">\mid S \mid</script> equations with <script type="math/tex">\mid S \mid</script> unknowns,
+but we are instead going to use a simpler and less computationally expensive way.
+This technique is called <em>Policy Evaluation</em>.
+For this, we want to use the Bellman equation as an update rule for our state-value estimation:</p>
+
+<script type="math/tex; mode=display">V_{k+1}(s) = R(s, \pi(s)) + \gamma V_k(\pi(s))</script>
+
+<p>We can then have two arrays, one for the old values and one for the new values calculated from the old ones.
+We can also do it in-place with one array, replacing values as we go through <script type="math/tex">S</script>.
+Although the latter is usually faster to converge it is anisotropic in the sense that
+the order we are going to do the updates is going to matter.
+In this example, we are going to use the two array version.
+Here, ‘N’ is the number of rows, ‘M’ the number of columns and
+‘transition’ is a function that gives the next <em>state</em> and the <em>reward</em> given the current <em>state</em> and <em>action</em>.
+Finally, treshold is a small value that will determine when we stop the iterations.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">policy_evaluation</span><span class="p">(</span><span class="n">policy</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span> <span class="n">treshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">V_init</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">]:</span>
+  <span class="s">"""
+  policy: 2D array where each state in the grid is assigned an action
+  treshold: This controls the precision of the convergence
+            to the ground-truth state-value function
+  """</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">is_instance</span><span class="p">(</span><span class="n">V_init</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="n">V_old</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">V_init</span><span class="p">)</span>
+    <span class="n">V_new</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">V_init</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">V_old</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">M</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+    <span class="n">V_new</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">M</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+
+  <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+        <span class="n">i_</span><span class="p">,</span> <span class="n">j_</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">transition</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+        <span class="n">V_new</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">gamma</span><span class="o">*</span><span class="n">V_old</span><span class="p">[</span><span class="n">i_</span><span class="p">][</span><span class="n">j_</span><span class="p">]</span>
+
+        <span class="n">delta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">V_new</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">V_old</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="n">treshold</span><span class="p">:</span>
+      <span class="k">break</span>
+
+    <span class="n">V_old</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">V_new</span><span class="p">)</span>
+  
+  <span class="k">return</span> <span class="n">V_new</span>
+</code></pre></div></div>
+
+<h3 id="policy-improvement">Policy Improvement</h3>
+<p>Once we have evaluated the state-value function,
+we change our policy for a better one according to this state-value function:</p>
+
+<script type="math/tex; mode=display">\pi'(s) = \text{argmax}_a [r(s, s(s, a)) + \gamma V(s(s, a))]</script>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">policy_improvement</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">]:</span>
+  <span class="s">"""
+  V: value-state function
+  """</span>
+  <span class="n">policy</span> <span class="o">=</span> <span class="p">[[]</span><span class="o">*</span><span class="n">M</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+      <span class="n">best</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">"-inf"</span><span class="p">)</span>
+      <span class="n">best_action</span> <span class="o">=</span> <span class="mi">0</span>
+
+      <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">i_</span><span class="p">,</span> <span class="n">j_</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">transition</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">+</span> <span class="n">gamma</span><span class="o">*</span><span class="n">V</span><span class="p">[</span><span class="n">i_</span><span class="p">][</span><span class="n">j_</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">:</span>
+          <span class="n">best</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">gamma</span><span class="o">*</span><span class="n">V</span><span class="p">[</span><span class="n">i_</span><span class="p">][</span><span class="n">j_</span><span class="p">]</span>
+          <span class="n">best_action</span> <span class="o">=</span> <span class="n">action</span>
+
+      <span class="n">policy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_action</span>
+
+  <span class="k">return</span> <span class="n">policy</span>
+</code></pre></div></div>
+
+<h3 id="final-algorithm">Final Algorithm</h3>
+
+<p><img src="../img/gridworld/policy_iteration.svg" alt="Policy Iteration" /></p>
+
+<p>We write an helper function to determine if the policy is stable:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">is_stable</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">p1</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="n">p2</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+  <span class="k">return</span> <span class="bp">True</span>
+</code></pre></div></div>
+
+<p>We can now write the full function:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">policy_iteration</span><span class="p">(</span><span class="n">treshold</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">]:</span>
+  <span class="n">V</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">M</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+  <span class="n">pi</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">M</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+
+  <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">policy_evaluation</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">treshold</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+    <span class="n">new_pi</span> <span class="o">=</span> <span class="n">policy_improvement</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_stable</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">new_pi</span><span class="p">):</span>
+      <span class="k">break</span>
+
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">new_pi</span>
+  
+  <span class="k">return</span> <span class="n">new_pi</span>
+</code></pre></div></div>
+
+<p>We can remark that we use the previous state-value function for evaluating the next one.
+This have the effect of greatly speeding up the evaluation step.</p>
+
+<h2 id="value-iteration">Value Iteration</h2>
+
+<p><img src="../img/gridworld/value_iteration.svg" alt="Value Iteration" /></p>
+
+<p>In Policy Iteration, we were estimating the state-value function of the policies until reasonable convergence.
+In Value Iteration, we instantly greedify the policy between the sweeps for state-value evaluation.
+It discards the need for actually computing the policy between each evaluation.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">value_iteration</span><span class="p">(</span><span class="n">treshold</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">]:</span>
+  <span class="n">V_old</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">M</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+  <span class="n">V_new</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">M</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+
+  <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">"-inf"</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+          <span class="n">i_</span><span class="p">,</span> <span class="n">j_</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">transition</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+
+          <span class="n">v</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">gamma</span><span class="o">*</span><span class="n">V_old</span><span class="p">[</span><span class="n">i_</span><span class="p">][</span><span class="n">j_</span><span class="p">]</span>
+          <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">:</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="n">V_new</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">best</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">V_new</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">V_old</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="n">treshold</span><span class="p">:</span>
+      <span class="k">break</span>
+
+    <span class="n">V_old</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">V_new</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="n">policy_improvement</span><span class="p">(</span><span class="n">V_new</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>In practice, we usually don’t use this algorithm in this form:
+a few steps of classical evaluation are put in between two <em>Value Iteration</em> steps.
+If Value Iteration can be seen as one step of evaluation followed by one policy improvement,
+this version of the algorithm can be seen as <script type="math/tex">k</script> steps of evaluation followed by an improvement one.</p>
+
+<h2 id="sarsa">SARSA</h2>
+
+<p>With SARSA and Q-Learning we are going to be estimating Q instead of V and derive the optimal policy from it.
+Another difference with these methods is that we are going to be simulating episodes
+through the gridworld in order to estimate the Q-function instead of sweeping through the <em>state</em> space <script type="math/tex">S</script>.<br />
+SARSA stands for State-Action-Reward-State-Action because we are going to look one action forward following the policy to estimate <script type="math/tex">Q(s,a)</script>.
+In fact we are not always going to follow the policy because it can be biased if it had not tried certain actions.
+To ensure that we explore the state-action space we need to take a random action once in a while and to start at a random valid position on the grid.
+Since we don’t need to explore as much as in the beginning episodes after episodes we can decrease the probability over time.
+This probability of chosing a random action in a given <em>state</em> is represented by <script type="math/tex">\epsilon</script>
+which decreases in <script type="math/tex">\frac{1}{t}</script> where <script type="math/tex">t</script> represent the epsiode.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">choose_action</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">eps_0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+  <span class="n">eps</span> <span class="o">=</span> <span class="n">eps_0</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">t</span><span class="o">/</span><span class="n">T</span><span class="p">))</span>
+
+  <span class="k">if</span> <span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">pi</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+
+  <span class="k">return</span> <span class="n">a</span>
+</code></pre></div></div>
+
+<p>Here we use <script type="math/tex">\epsilon = \frac{\epsilon_0}{1+t/T}</script>. <script type="math/tex">\epsilon_0</script> is <script type="math/tex">\epsilon</script> at time-step <script type="math/tex">t=0</script> and <script type="math/tex">T</script>
+represents the decreasing period. Choosing a random action with probability <script type="math/tex">\epsilon</script> and the greedy action otherwise
+is called an <script type="math/tex">\epsilon</script>-greedy policy.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">SARSA</span><span class="p">(</span><span class="n">num_iter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span> <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eps_0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">T</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">]:</span>
+  <span class="s">"""
+  num_iter  :   Number of simulation episodes
+  alpha     :   Update rate of our algorithm
+  gamma     :   Discount rate
+  """</span>
+  <span class="n">Q</span> <span class="o">=</span> <span class="p">[[[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+  <span class="n">pi</span> <span class="o">=</span> <span class="p">[[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+
+  <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iter</span><span class="p">):</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">valid_random_init</span><span class="p">()</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">choose_action</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">eps_0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+      <span class="n">i_</span><span class="p">,</span> <span class="n">j_</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">transition</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+      <span class="n">a_</span> <span class="o">=</span> <span class="n">choose_action</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">i_</span><span class="p">,</span> <span class="n">j_</span><span class="p">,</span> <span class="n">eps_0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+      <span class="n">Q</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">Q</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">a</span><span class="p">]</span> <span class="o">+</span> <span class="n">alpha</span><span class="o">*</span><span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="n">gamma</span><span class="o">*</span><span class="n">Q</span><span class="p">[</span><span class="n">i_</span><span class="p">][</span><span class="n">j_</span><span class="p">][</span><span class="n">a_</span><span class="p">])</span>
+      
+      <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">i_</span><span class="p">,</span> <span class="n">j_</span><span class="p">,</span> <span class="n">a_</span>
+      <span class="k">if</span> <span class="n">is_terminal</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="k">break</span>
+
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">Q_to_policy</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="n">pi</span>
+</code></pre></div></div>
+
+<p>Remark that we do not completely update <script type="math/tex">Q(s,a)</script> to <script type="math/tex">r + \gamma*Q(s', a')</script>,
+we make a step in that direction of proportion <script type="math/tex">\alpha</script>, this parameter is the 
+learning rate of our algorithm.</p>
+
+<h2 id="q-learning">Q-Learning</h2>
+
+<p>Q-Learning is basically the same as SARSA, it only differs in its update rule:
+instead of choosing a second action following the <script type="math/tex">\epsilon</script>-greedy policy,
+we choose the best <em>action</em> available in <em>state</em> <script type="math/tex">s'</script>: <script type="math/tex">\max_{a'} Q(s', a')</script> which is,
+in fact, the state-value of <script type="math/tex">s'</script>: <script type="math/tex">V(s')</script> for the greedy policy.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">Q_Learning</span><span class="p">(</span><span class="n">num_iter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span> <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eps_0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">T</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">]:</span>
+  <span class="s">"""
+  num_iter  :   Number of simulation episodes
+  alpha     :   Update rate of our algorithm
+  gamma     :   Discount rate
+  """</span>
+  <span class="n">Q</span> <span class="o">=</span> <span class="p">[[[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+  <span class="n">pi</span> <span class="o">=</span> <span class="p">[[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+
+  <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iter</span><span class="p">):</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">valid_random_init</span><span class="p">()</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">choose_action</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">eps_0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+      <span class="n">i_</span><span class="p">,</span> <span class="n">j_</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">transition</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+      <span class="n">a_</span> <span class="o">=</span> <span class="n">choose_action</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">i_</span><span class="p">,</span> <span class="n">j_</span><span class="p">,</span> <span class="n">eps_0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+      <span class="n">Q</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">Q</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">a</span><span class="p">]</span> <span class="o">+</span> <span class="n">alpha</span><span class="o">*</span><span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="n">gamma</span><span class="o">*</span><span class="nb">max</span><span class="p">(</span><span class="n">old_Q</span><span class="p">[</span><span class="n">i_</span><span class="p">][</span><span class="n">j_</span><span class="p">]))</span>
+      
+      <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">i_</span><span class="p">,</span> <span class="n">j_</span><span class="p">,</span> <span class="n">a_</span>
+      <span class="k">if</span> <span class="n">is_terminal</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="k">break</span>
+
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">Q_to_policy</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="n">pi</span>
+</code></pre></div></div>
+
+<h2 id="final-note">Final Note</h2>
+
+<p>The code presented here is halfway between Python and pseudo-code as it does not define some functions.
+If you want to see the actual code used here (JavaScript - p5), look <a href="https://github.com/devspaceship/devspaceship.github.io/tree/master/scripts/gridworld">here</a>.
+Also, a lot of simplifications have been done in order to explain more directly
+the different concepts. Finally, we only looked at the case of deterministic MDP with known model.
+To have a better view of <strong>Reinforcement Learning</strong>, I recommend this <a href="http://incompleteideas.net/book/bookdraft2017nov5.pdf">excellent book</a> about it
+written by Sutton &amp; Barto.</p>
+
+</span>
+
+        
+
+        
+        <div class="share">
+          <!-- Go to www.addthis.com/dashboard to customize your tools -->
+          <div class="addthis_sharing_toolbox"></div>
+        </div>
+        
+
+        
+        <div class="tags">
+          <small>
+          <i class="fa fa-tags"></i>
+            Reinforcement Learning, Markov Decision Process, Gridworld
+          </small>
+        </div>
+        
+
+      </div>
+
+      
+      <div class="content-panel feedback">
+        I <i class="fa fa-heart"></i> feedback.<br />
+        Let me know what you think of this article on twitter <a href="http://www.twitter.com/adamspaceship">@adamspaceship</a> or leave a comment below!
+      </div>
+      
+
+      
+      <div class="content-panel comments">
+        <div id="disqus_thread">
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+      </div>
+      
+
+      
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+function disqus_config() { this.experiment.enable_scroll_container = true; }
+var disqus_shortname = "science-decoder";
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+
+      </div>
+    </div>
+
+    <div class="footer clearfix">
+  <div class="col-md-6">
+    Jekyll theme made with <i class="fa fa-heart"></i> by <a href="https://twitter.com/_JacobTomlinson">Jacob Tomlinson</a>
+  </div>
+  <div class="col-md-6">
+    &lt;/&gt; on <a href="https://github.com/jacobtomlinson/carte-noire">Github</a> &nbsp;<i class="fa fa-github-alt"></i>
+  </div>
+</div>
+
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="/js/jquery.mmenu.min.all.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript">
+   $(document).ready(function() {
+      $("#my-menu").mmenu().on( "closed.mm", function() {
+            $(".menu-button").show();
+         });
+      $(".menu-button").click(function() {
+        $(".menu-button").hide();
+        $("#my-menu").trigger("open.mm");
+      });
+   });
+</script>
+
+
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-143621148-1']);
+          _gaq.push(['_trackPageview']);
+  (function () {
+      var ga = document.createElement('script');
+      ga.type = 'text/javascript';
+      ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+    </body>
+</html>
