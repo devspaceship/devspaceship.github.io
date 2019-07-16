@@ -286,7 +286,7 @@ SARSA stands for State-Action-Reward-State-Action because we are going to look o
 In fact we are not always going to follow the policy because it can be biased if it had not tried certain actions.
 To ensure that we explore the state-action space we need to take a random action once in a while and to start at a random valid position on the grid.
 Since we don't need to explore as much as in the beginning episodes after episodes we can decrease the probability over time.
-This probability of chosing a random action in a given _state_ is represented by $$ \epsilon $$
+This probability of chosing a random action in a given _state_ is represented by $$ \varepsilon $$
 which decreases in $$ \frac{1}{t} $$ where $$ t $$ represent the epsiode.
 
 ~~~ python
@@ -301,9 +301,9 @@ def choose_action(pi, i, j, eps_0, T, t):
   return a
 ~~~
 
-Here we use $$ \epsilon = \frac{\epsilon_0}{1+t/T} $$. $$ \epsilon_0 $$ is $$ \epsilon $$ at time-step $$ t=0 $$ and $$ T $$
-represents the decreasing period. Choosing a random action with probability $$ \epsilon $$ and the greedy action otherwise
-is called an $$ \epsilon $$-greedy policy.
+Here we use $$ \varepsilon = \frac{\varepsilon_0}{1+t/T} $$. $$ \varepsilon_0 $$ is $$ \varepsilon $$ at time-step $$ t=0 $$ and $$ T $$
+represents the decreasing period. Choosing a random action with probability $$ \varepsilon $$ and the greedy action otherwise
+is called an $$ \varepsilon $$-greedy policy.
 
 ~~~ python
 def SARSA(num_iter: int, alpha:float, gamma: float, eps_0: float, T: int) -> list[list]:
@@ -342,7 +342,7 @@ learning rate of our algorithm.
 ## Q-Learning
 
 Q-Learning is basically the same as SARSA, it only differs in its update rule:
-instead of choosing a second action following the $$ \epsilon $$-greedy policy,
+instead of choosing a second action following the $$ \varepsilon $$-greedy policy,
 we choose the best _action_ available in _state_ $$ s' $$: $$ \max_{a'} Q(s', a') $$ which is,
 in fact, the state-value of $$ s' $$: $$ V(s') $$ for the greedy policy.
 
